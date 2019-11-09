@@ -17,8 +17,7 @@ class CreateAuthorsTable extends Migration
             $table->bigIncrements('id');
             $table->text('firstname');
             $table->text('lastname');
-            $table->text('city');
-            $table->integer('zip');
+            $table->unsignedInteger('age');
             $table->string('address');
             $table->softDeletes();
             $table->timestamps();
