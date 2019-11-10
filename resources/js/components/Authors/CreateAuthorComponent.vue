@@ -5,13 +5,13 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label>Firstname:</label>
+                        <label>Firstname</label>
                         <input type="text" class="form-control" v-model="author.firstname">
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label>Lastname:</label>
+                        <label>Lastname</label>
                         <input type="text" class="form-control" v-model="author.lastname">
                     </div>
                 </div>
@@ -25,7 +25,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label>Address:</label>
+                        <label>Address</label>
                         <input type="text" class="form-control" v-model="author.address">
                     </div>
                 </div>

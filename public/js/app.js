@@ -37849,7 +37849,7 @@ var render = function() {
         _c("div", { staticClass: "row" }, [
           _c("div", { staticClass: "col-md-6" }, [
             _c("div", { staticClass: "form-group" }, [
-              _c("label", [_vm._v("Firstname:")]),
+              _c("label", [_vm._v("Firstname")]),
               _vm._v(" "),
               _c("input", {
                 directives: [
@@ -37877,7 +37877,7 @@ var render = function() {
           _vm._v(" "),
           _c("div", { staticClass: "col-md-6" }, [
             _c("div", { staticClass: "form-group" }, [
-              _c("label", [_vm._v("Lastname:")]),
+              _c("label", [_vm._v("Lastname")]),
               _vm._v(" "),
               _c("input", {
                 directives: [
@@ -37935,7 +37935,7 @@ var render = function() {
           _vm._v(" "),
           _c("div", { staticClass: "col-md-6" }, [
             _c("div", { staticClass: "form-group" }, [
-              _c("label", [_vm._v("Address:")]),
+              _c("label", [_vm._v("Address")]),
               _vm._v(" "),
               _c("input", {
                 directives: [
@@ -38019,7 +38019,7 @@ var render = function() {
         _c("div", { staticClass: "row" }, [
           _c("div", { staticClass: "col-md-6" }, [
             _c("div", { staticClass: "form-group" }, [
-              _c("label", [_vm._v("Firstname:")]),
+              _c("label", [_vm._v("Firstname")]),
               _vm._v(" "),
               _c("input", {
                 directives: [
@@ -38047,7 +38047,7 @@ var render = function() {
           _vm._v(" "),
           _c("div", { staticClass: "col-md-6" }, [
             _c("div", { staticClass: "form-group" }, [
-              _c("label", [_vm._v("Lastname:")]),
+              _c("label", [_vm._v("Lastname")]),
               _vm._v(" "),
               _c("input", {
                 directives: [
@@ -38105,7 +38105,7 @@ var render = function() {
           _vm._v(" "),
           _c("div", { staticClass: "col-md-6" }, [
             _c("div", { staticClass: "form-group" }, [
-              _c("label", [_vm._v("Address:")]),
+              _c("label", [_vm._v("Address")]),
               _vm._v(" "),
               _c("input", {
                 directives: [
