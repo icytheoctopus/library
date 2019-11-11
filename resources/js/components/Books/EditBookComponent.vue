@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>Update Book</h1>
+        <h1>Update {{ book.name }}</h1>
         <form @submit.prevent="updateBook">
             <div class="row">
                 <div class="col-md-12">

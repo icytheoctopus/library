@@ -1927,7 +1927,7 @@ __webpack_require__.r(__webpack_exports__);
 
       var uri = "http://library.dev.local/api/author/delete/".concat(id);
       this.axios["delete"](uri).then(function (response) {
-        _this2.authors.splice(_this2.authors.indexOf(id), 1);
+        _this2.authors.splice(_this2.author.indexOf(id), 1);
       });
     }
   }
@@ -2056,10 +2056,97 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      author: {}
+      author: {},
+      authorBooks: {},
+      books: {},
+      creatingBook: false,
+      suggestionsOpen: false,
+      selectedBook: {
+        name: '',
+        id: '',
+        release_date: '',
+        preselected: ''
+      }
     };
   },
   created: function created() {
@@ -2067,7 +2154,9 @@ __webpack_require__.r(__webpack_exports__);
 
     var uri = "http://library.dev.local/api/author/edit/".concat(this.$route.params.id);
     this.axios.get(uri).then(function (response) {
-      _this.author = response.data;
+      _this.author = response.data.author;
+      _this.authorBooks = response.data.authorBooks;
+      _this.books = response.data.books;
     });
   },
   methods: {
@@ -2080,6 +2169,92 @@ __webpack_require__.r(__webpack_exports__);
           name: 'authors'
         });
       });
+    },
+    deleteAuthor: function deleteAuthor() {
+      var _this3 = this;
+
+      var uri = "http://library.dev.local/api/author/delete/".concat(this.author.id);
+      this.axios["delete"](uri).then(function (response) {
+        _this3.$router.push({
+          name: 'authors'
+        });
+      });
+    },
+    createAttachBook: function createAttachBook() {
+      var _this4 = this;
+
+      var uri = 'http://library.dev.local/api/book/create/attach';
+      var data = {
+        'author': this.author,
+        'book': this.selectedBook
+      };
+      this.axios.post(uri, data).then(function (response) {
+        _this4.$router.go();
+      });
+    },
+    attachBook: function attachBook() {
+      var _this5 = this;
+
+      var uri = "http://library.dev.local/api/attach/".concat(this.author.id, "/").concat(this.selectedBook.id);
+      this.axios.post(uri).then(function (response) {
+        _this5.$router.go();
+      });
+    },
+    detachBook: function detachBook(book_id, index) {
+      var _this6 = this;
+
+      var uri = "http://library.dev.local/api/detach/".concat(this.author.id, "/").concat(book_id);
+      this.axios.post(uri).then(function (response) {
+        _this6.authorBooks.splice(index, 1);
+      });
+    },
+    deleteBook: function deleteBook(id, index) {
+      var _this7 = this;
+
+      var uri = "http://library.dev.local/api/book/delete/".concat(id);
+      this.axios["delete"](uri).then(function (response) {
+        _this7.authorBooks.splice(index, 1);
+      });
+    },
+    toogleBookForm: function toogleBookForm() {
+      this.creatingBook = !this.creatingBook;
+    },
+    bookInputChange: function bookInputChange() {
+      var inputValue = this.selectedBook.name.toLowerCase();
+      this.selectedBook.preselected = '';
+
+      for (var i = 0, len = this.books.length; i < len; i++) {
+        if (inputValue.length === 0) {
+          //if inputValue empty show all
+          this.books[i].show = true;
+        } else {
+          this.books[i].show = this.books[i].name.toLowerCase().indexOf(inputValue) !== -1;
+        }
+      }
+    },
+    suggestionClick: function suggestionClick(index) {
+      this.selectedBook.preselected = index;
+      this.selectedBook.id = this.books[index].id;
+      this.selectedBook.name = this.books[index].name;
+      this.selectedBook.release_date = this.books[index].release_date;
+      this.closeSuggestions();
+    },
+    closeSuggestions: function closeSuggestions() {
+      this.suggestionsOpen = false;
+      this.books.forEach(function (book) {
+        book.show = false;
+      });
+    },
+    focusIn: function focusIn() {
+      this.suggestionsOpen = true;
+      this.bookInputChange();
+    },
+    focusOut: function focusOut() {
+      var _this8 = this;
+
+      setTimeout(function () {
+        return _this8.closeSuggestions();
+      }, 200);
     }
   }
 });
@@ -38002,20 +38177,16 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("h1", [_vm._v("Edit Author")]),
-    _vm._v(" "),
-    _c(
-      "form",
-      {
-        on: {
-          submit: function($event) {
-            $event.preventDefault()
-            return _vm.updateAuthor($event)
-          }
-        }
-      },
-      [
+  return _vm.author
+    ? _c("div", [
+        _c("h1", [
+          _vm._v(
+            _vm._s(_vm.author.firstname) + " " + _vm._s(_vm.author.lastname)
+          )
+        ]),
+        _vm._v(" "),
+        _c("h3", [_vm._v("Personal data")]),
+        _vm._v(" "),
         _c("div", { staticClass: "row" }, [
           _c("div", { staticClass: "col-md-6" }, [
             _c("div", { staticClass: "form-group" }, [
@@ -38134,19 +38305,291 @@ var render = function() {
         _vm._v(" "),
         _c("br"),
         _vm._v(" "),
-        _vm._m(0)
-      ]
-    )
-  ])
+        _c("h3", [_vm._v("Author's books")]),
+        _vm._v(" "),
+        _c("div", { staticClass: "text-right" }, [
+          _vm.creatingBook
+            ? _c(
+                "button",
+                {
+                  staticClass: "btn btn-primary",
+                  on: { click: _vm.toogleBookForm }
+                },
+                [_vm._v("Close")]
+              )
+            : _c(
+                "button",
+                {
+                  staticClass: "btn btn-outline-primary",
+                  on: { click: _vm.toogleBookForm }
+                },
+                [_vm._v("Attach new Book")]
+              ),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" })
+        ]),
+        _vm._v(" "),
+        _vm.creatingBook
+          ? _c("div", [
+              _c("div", { staticClass: "row" }, [
+                _c("div", { staticClass: "col-md-12" }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", [_vm._v("Name")]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.selectedBook.name,
+                          expression: "selectedBook.name"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { type: "text" },
+                      domProps: { value: _vm.selectedBook.name },
+                      on: {
+                        keyup: _vm.bookInputChange,
+                        focusin: _vm.focusIn,
+                        focusout: _vm.focusOut,
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.selectedBook,
+                            "name",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("div", [
+                      _c(
+                        "ul",
+                        {
+                          directives: [
+                            {
+                              name: "show",
+                              rawName: "v-show",
+                              value: _vm.suggestionsOpen,
+                              expression: "suggestionsOpen"
+                            }
+                          ],
+                          staticStyle: { width: "100%" }
+                        },
+                        _vm._l(_vm.books, function(suggestion, index) {
+                          return _c(
+                            "li",
+                            {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value: suggestion.show,
+                                  expression: "suggestion.show"
+                                }
+                              ],
+                              key: suggestion.id,
+                              on: {
+                                click: function($event) {
+                                  return _vm.suggestionClick(index)
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                                " +
+                                  _vm._s(suggestion.name) +
+                                  "\n                            "
+                              )
+                            ]
+                          )
+                        }),
+                        0
+                      )
+                    ])
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "row" }, [
+                _c("div", { staticClass: "col-md-12" }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", [_vm._v("Release Date")]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.selectedBook.release_date,
+                          expression: "selectedBook.release_date"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { type: "date" },
+                      domProps: { value: _vm.selectedBook.release_date },
+                      on: {
+                        keyup: _vm.bookInputChange,
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.selectedBook,
+                            "release_date",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("br"),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group text-center" }, [
+                _vm.selectedBook.preselected !== ""
+                  ? _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-outline-success",
+                        on: { click: _vm.attachBook }
+                      },
+                      [_vm._v("Attach Selected Book")]
+                    )
+                  : _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-success",
+                        on: { click: _vm.createAttachBook }
+                      },
+                      [_vm._v("Create And Attach Book")]
+                    )
+              ]),
+              _vm._v(" "),
+              _c("br")
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        _c("table", { staticClass: "table table-hover" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c(
+            "tbody",
+            _vm._l(_vm.authorBooks, function(book, index) {
+              return _c("tr", { key: book.id }, [
+                _c("td", [_vm._v(_vm._s(book.id))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(book.name))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(book.release_date))]),
+                _vm._v(" "),
+                _c(
+                  "td",
+                  [
+                    _c(
+                      "router-link",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: {
+                          to: { name: "edit-book", params: { id: book.id } }
+                        }
+                      },
+                      [_vm._v("Edit")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-outline-danger",
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            return _vm.detachBook(book.id, index)
+                          }
+                        }
+                      },
+                      [_vm._v("Detach")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-danger",
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            return _vm.deleteBook(book.id, index)
+                          }
+                        }
+                      },
+                      [_vm._v("Delete")]
+                    )
+                  ],
+                  1
+                )
+              ])
+            }),
+            0
+          )
+        ]),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group" }, [
+          _c(
+            "button",
+            { staticClass: "btn btn-danger", on: { click: _vm.deleteAuthor } },
+            [_vm._v("Delete Author")]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            { staticClass: "btn btn-success", on: { click: _vm.updateAuthor } },
+            [_vm._v("Update Author")]
+          )
+        ]),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("br")
+      ])
+    : _c("div", [_vm._v("Author not found")])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("button", { staticClass: "btn btn-primary" }, [
-        _vm._v("Update Author")
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("ID")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Name")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Release Date")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Actions")])
       ])
     ])
   }
@@ -38398,7 +38841,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("h1", [_vm._v("Update Book")]),
+    _c("h1", [_vm._v("Update " + _vm._s(_vm.book.name))]),
     _vm._v(" "),
     _c(
       "form",

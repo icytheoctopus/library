@@ -51,7 +51,7 @@
             deleteAuthor(id) {
                 let uri = `http://library.dev.local/api/author/delete/${id}`;
                 this.axios.delete(uri).then(response => {
-                    this.authors.splice(this.authors.indexOf(id), 1);
+                    this.authors.splice(this.author.indexOf(id), 1);
                 });
             }
         }

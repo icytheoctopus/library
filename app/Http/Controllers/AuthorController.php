@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Author;
+use App\Book;
 use App\Http\Resources\AuthorResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -50,9 +51,11 @@ class AuthorController extends Controller
      * @param  \App\Author  $author
      * @return \Illuminate\Http\Response
      */
-    public function show(Author $author)
+    public function show($id)
     {
-        //
+        $author = Author::find($id);
+        $author->books = $author->books()->get();
+        return response()->json($author);
     }
 
     /**
@@ -62,7 +65,13 @@ class AuthorController extends Controller
     public function edit($id)
     {
         $author = Author::find($id);
-        return response()->json($author);
+        if ($author){
+            $books = Book::all();
+            $authorBooks = $author->books()->get();
+
+            return response()->json(['author' => $author, 'authorBooks' => $authorBooks, 'books' => $books]);
+        }
+        return null;
     }
 
     /**
@@ -88,5 +97,28 @@ class AuthorController extends Controller
         $author->delete();
 
         return response()->json('successfully deleted');
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function detach($author_id, $book_id)
+    {
+        $author = Author::find($author_id);
+        $book = Author::find($book_id);
+
+        $author->books()->detach($book);
+
+        return response()->json('successfully detached');
+    }
+
+    public function attach($author_id, $book_id){
+        $author = Author::find($author_id);
+        $book = Author::find($book_id);
+
+        $author->books()->attach($book);
+
+        return response()->json('successfully detached');
     }
 }

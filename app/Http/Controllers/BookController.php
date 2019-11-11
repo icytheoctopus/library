@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Author;
 use App\Book;
 use App\Http\Resources\BookResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class BookController extends Controller
 {
@@ -39,6 +41,21 @@ class BookController extends Controller
 
         $book->save();
         return response()->json('success');
+    }
+
+    public function createAttach(Request $request){
+        $authorArray = $request->get('author');
+        $author = Author::find($authorArray['id']);
+
+        $bookArray = $request->get('book');
+        $book = new Book([
+            'name' => $bookArray['name'],
+            'release_date' => $bookArray['release_date'],
+        ]);
+        $book->save();
+        $book->authors()->attach($author);
+
+        return response()->json('successfully attached');
     }
 
     /**
