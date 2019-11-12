@@ -7,6 +7,7 @@ use App\Book;
 use App\Http\Resources\BookResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class BookController extends Controller
 {
@@ -34,28 +35,78 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
+        $rules = [
+            'name' => 'required|min:3|max:50',
+            'release_date' => 'required|date'
+        ];
+
+        $messages = [
+            'required' => 'The :attribute field is required.',
+            'min' => 'Minimum :attribute field length is :min',
+            'max' => 'Maximum :attribute field length is :min',
+            'date' => 'Please enter valid :attribute',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors(),
+                'messages' => $validator->messages(),
+            ],422);
+        }
+
         $book = new Book([
             'name' => $request->get('name'),
             'release_date' => $request->get('release_date')
         ]);
-
         $book->save();
-        return response()->json('success');
+
+        return response()->json([
+            'success' => true,
+            'messages' => 'Book successfully created!',
+        ]);
     }
 
     public function createAttach(Request $request){
-        $authorArray = $request->get('author');
-        $author = Author::find($authorArray['id']);
+        $rules = [
+            'name' => 'required|min:3|max:50',
+            'release_date' => 'required|date'
+        ];
 
-        $bookArray = $request->get('book');
+        $messages = [
+            'required' => 'The :attribute field is required.',
+            'min' => 'Minimum :attribute field length is :min',
+            'max' => 'Maximum :attribute field length is :min',
+            'date' => 'Please enter valid :attribute',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors(),
+                'messages' => $validator->messages(),
+            ],422);
+        }
+
+        $authorData = $request->get('author');
+        $author = Author::find($authorData['id']);
+        $bookData = $request->get('book');
+
         $book = new Book([
-            'name' => $bookArray['name'],
-            'release_date' => $bookArray['release_date'],
+            'name' => $bookData['name'],
+            'release_date' => $bookData['release_date'],
         ]);
         $book->save();
         $book->authors()->attach($author);
 
-        return response()->json('successfully attached');
+        return response()->json([
+            'success' => true,
+            'messages' => 'Book successfully created and attached!',
+        ]);
     }
 
     /**
@@ -78,6 +129,7 @@ class BookController extends Controller
     public function edit($id)
     {
         $book = Book::find($id);
+
         return response()->json($book);
     }
 
@@ -90,10 +142,35 @@ class BookController extends Controller
      */
     public function update($id, Request $request)
     {
+        $rules = [
+            'name' => 'required|min:3|max:50',
+            'release_date' => 'required|date'
+        ];
+
+        $messages = [
+            'required' => 'The :attribute field is required.',
+            'min' => 'Minimum :attribute field length is :min',
+            'max' => 'Maximum :attribute field length is :min',
+            'date' => 'Please enter valid :attribute',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors(),
+                'messages' => $validator->messages(),
+            ],422);
+        }
+
         $book = Book::find($id);
         $book->update($request->all());
 
-        return response()->json('successfully updated');
+        return response()->json([
+            'success' => true,
+            'messages' => 'Book successfully updated!',
+        ]);
     }
 
     /**
@@ -107,6 +184,9 @@ class BookController extends Controller
         $book = Book::find($id);
         $book->delete();
 
-        return response()->json('successfully deleted');
+        return response()->json([
+            'success' => true,
+            'messages' => 'Book successfully deleted!',
+        ]);
     }
 }

@@ -96,7 +96,11 @@ class AuthorController extends Controller
             $books = Book::orderBy('name')->get();
             $authorBooks = $author->books()->get();
 
-            return response()->json(['author' => $author, 'authorBooks' => $authorBooks, 'books' => $books]);
+            return response()->json([
+                'author' => $author,
+                'authorBooks' => $authorBooks,
+                'books' => $books
+            ]);
         }
         return null;
     }
@@ -166,7 +170,10 @@ class AuthorController extends Controller
 
         $author->books()->detach($book);
 
-        return response()->json('successfully detached');
+        return response()->json([
+            'success' => true,
+            'messages' => 'Book successfully detached!',
+        ]);
     }
 
     public function attach($author_id, $book_id){
@@ -175,6 +182,9 @@ class AuthorController extends Controller
 
         $author->books()->attach($book);
 
-        return response()->json('successfully detached');
+        return response()->json([
+            'success' => true,
+            'messages' => 'Book successfully attached!',
+        ]);
     }
 }

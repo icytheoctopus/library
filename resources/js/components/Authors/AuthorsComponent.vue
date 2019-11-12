@@ -27,7 +27,7 @@
                 <td>{{ author.lastname }}</td>
                 <td>{{ author.age }}</td>
                 <td>{{ author.address }}</td>
-                <td><router-link :to="{name: 'edit-author', params: { id: author.id }}" class="btn btn-primary btn-block">Edit</router-link></td>
+                <td><router-link :to="{name: 'edit-author', params: { id: author.id }}" class="btn btn-primary btn-block">Manage</router-link></td>
                 <td><button class="btn btn-danger btn-block" @click.prevent="deleteAuthor(author.id, index)">Delete</button></td>
             </tr>
             </tbody>

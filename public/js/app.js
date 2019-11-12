@@ -38938,7 +38938,7 @@ var render = function() {
                       to: { name: "edit-author", params: { id: author.id } }
                     }
                   },
-                  [_vm._v("Edit")]
+                  [_vm._v("Manage")]
                 )
               ],
               1
