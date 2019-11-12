@@ -157,6 +157,7 @@
         },
         methods: {
             addAuthor(){
+                this.$v.$touch();
                 if(!this.$v.$invalid){
                     let uri = 'http://library.dev.local/api/author/create';
                     this.axios.post(uri, this.author).then((response) => {

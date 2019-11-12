@@ -89,6 +89,7 @@
         },
         methods: {
             addBook(){
+                this.$v.$touch();
                 if(!this.$v.$invalid){
                     let uri = 'http://library.dev.local/api/book/create';
                     this.axios.post(uri, this.book).then((response) => {
