@@ -154,11 +154,12 @@
                     release_date: '',
                     preselected: ''
                 },
+                validationErrors: {}
             }
         },
         created() {
             let uri = `http://library.dev.local/api/author/edit/${this.$route.params.id}`;
-            this.axios.get(uri).then((response) => {
+            this.axios.get(uri).then(response => {
                 this.author = response.data.author;
                 this.authorBooks = response.data.authorBooks;
                 this.books = response.data.books;
@@ -176,8 +177,8 @@
             author:{
                 firstname: {
                     required,
-                    minLength: minLength(3),
-                    maxLength: maxLength(50)
+                    // minLength: minLength(3),
+                    // maxLength: maxLength(50)
                 },
                 lastname: {
                     required,
@@ -186,7 +187,7 @@
                 },
                 age: {
                     required,
-                    between: between(15, 95)
+                    between: between(15, 100)
                 },
                 address: {
                     required,
@@ -256,8 +257,10 @@
                 this.$v.author.$touch();
                 if(!this.$v.author.$invalid){
                     let uri = `http://library.dev.local/api/author/update/${this.$route.params.id}`;
-                    this.axios.post(uri, this.author).then((response) => {
+                    this.axios.post(uri, this.author).then(response => {
                         this.$router.push({name: 'authors'});
+                    }).catch(error => {
+                        this.validationErrors = error.response.data.errors;
                     });
                 }
             },
@@ -265,6 +268,8 @@
                 let uri = `http://library.dev.local/api/author/delete/${this.author.id}`;
                 this.axios.delete(uri).then(response => {
                     this.$router.push({ name: 'authors' });
+                }).catch(error => {
+                    this.validationErrors = error.response.data.errors;
                 });
             },
             createAttachBook() {
@@ -275,8 +280,10 @@
                         'author': this.author,
                         'book': this.selectedBook,
                     };
-                    this.axios.post(uri, data).then((response) => {
+                    this.axios.post(uri, data).then(response => {
                         this.$router.go();
+                    }).catch(error => {
+                        this.validationErrors = error.response.data.errors;
                     });
                 }
             },
@@ -286,6 +293,8 @@
                     let uri = `http://library.dev.local/api/attach/${this.author.id}/${this.selectedBook.id}`;
                     this.axios.post(uri).then(response => {
                         this.$router.go();
+                    }).catch(error => {
+                        this.validationErrors = error.response.data.errors;
                     });
                 }
             },
@@ -293,12 +302,16 @@
                 let uri = `http://library.dev.local/api/detach/${this.author.id}/${book_id}`;
                 this.axios.post(uri).then(response => {
                     this.authorBooks.splice(index, 1);
+                }).catch(error => {
+                    this.validationErrors = error.response.data.errors;
                 });
             },
             deleteBook(id, index) {
                 let uri = `http://library.dev.local/api/book/delete/${id}`;
                 this.axios.delete(uri).then(response => {
                     this.authorBooks.splice(index, 1);
+                }).catch(error => {
+                    this.validationErrors = error.response.data.errors;
                 });
             },
             toogleBookForm(){

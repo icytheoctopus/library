@@ -7,6 +7,7 @@ use App\Book;
 use App\Http\Resources\AuthorResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class AuthorController extends Controller
 {
@@ -34,15 +35,40 @@ class AuthorController extends Controller
      */
     public function store(Request $request)
     {
-        $author = new Author([
-            'firstname' => $request->get('firstname'),
-            'lastname' => $request->get('lastname'),
-            'age' => $request->get('age'),
-            'address' => $request->get('address')
-        ]);
+        $rules = [
+            'firstname' => 'required|min:3|max:50',
+            'lastname' => 'required|min:3|max:50',
+            'age' => 'required|numeric|between:15,100',
+            'address' => 'max:200',
+        ];
 
-        $author->save();
-        return response()->json('success');
+        $messages = [
+            'required' => 'The :attribute field is required.',
+            'min' => 'Minimum :attribute field length is :min',
+            'max' => 'Maximum :attribute field length is :min',
+            'between' => 'The allowed range for :attribute field is :min - :max',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+        if ($validator->fails()){
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ],422);
+
+        }else{
+            $author = new Author([
+                'firstname' => $request->get('firstname'),
+                'lastname' => $request->get('lastname'),
+                'age' => $request->get('age'),
+                'address' => $request->get('address')
+            ]);
+
+            $author->save();
+            return response()->json([
+                'success' => true,
+            ]);
+        }
     }
 
     /**
@@ -81,10 +107,35 @@ class AuthorController extends Controller
      */
     public function update($id, Request $request)
     {
-        $author = Author::find($id);
-        $author->update($request->all());
+        $rules = [
+            'firstname' => 'required|min:3|max:50',
+            'lastname' => 'required|min:3|max:50',
+            'age' => 'required|numeric|between:15,100',
+            'address' => 'max:200',
+        ];
 
-        return response()->json('successfully updated');
+        $messages = [
+            'required' => 'The :attribute field is required.',
+            'min' => 'Minimum :attribute field length is :min',
+            'max' => 'Maximum :attribute field length is :min',
+            'between' => 'The allowed range for :attribute field is :min - :max',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+        if ($validator->fails()){
+            Log::debug('PROPAOOOOO');
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ],422);
+        }else{
+            $author = Author::find($id);
+            $author->update($request->all());
+
+            return response()->json([
+                'success' => true,
+            ]);
+        }
     }
 
     /**

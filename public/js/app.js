@@ -2167,7 +2167,8 @@ __webpack_require__.r(__webpack_exports__);
         id: '',
         release_date: '',
         preselected: ''
-      }
+      },
+      validationErrors: {}
     };
   },
   created: function created() {
@@ -2193,9 +2194,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     author: {
       firstname: {
-        required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"],
-        minLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["minLength"])(3),
-        maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["maxLength"])(50)
+        required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"] // minLength: minLength(3),
+        // maxLength: maxLength(50)
+
       },
       lastname: {
         required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"],
@@ -2204,7 +2205,7 @@ __webpack_require__.r(__webpack_exports__);
       },
       age: {
         required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"],
-        between: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["between"])(15, 95)
+        between: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["between"])(15, 100)
       },
       address: {
         required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"],
@@ -2273,6 +2274,8 @@ __webpack_require__.r(__webpack_exports__);
           _this2.$router.push({
             name: 'authors'
           });
+        })["catch"](function (error) {
+          _this2.validationErrors = error.response.data.errors;
         });
       }
     },
@@ -2284,6 +2287,8 @@ __webpack_require__.r(__webpack_exports__);
         _this3.$router.push({
           name: 'authors'
         });
+      })["catch"](function (error) {
+        _this3.validationErrors = error.response.data.errors;
       });
     },
     createAttachBook: function createAttachBook() {
@@ -2299,6 +2304,8 @@ __webpack_require__.r(__webpack_exports__);
         };
         this.axios.post(uri, data).then(function (response) {
           _this4.$router.go();
+        })["catch"](function (error) {
+          _this4.validationErrors = error.response.data.errors;
         });
       }
     },
@@ -2311,6 +2318,8 @@ __webpack_require__.r(__webpack_exports__);
         var uri = "http://library.dev.local/api/attach/".concat(this.author.id, "/").concat(this.selectedBook.id);
         this.axios.post(uri).then(function (response) {
           _this5.$router.go();
+        })["catch"](function (error) {
+          _this5.validationErrors = error.response.data.errors;
         });
       }
     },
@@ -2320,6 +2329,8 @@ __webpack_require__.r(__webpack_exports__);
       var uri = "http://library.dev.local/api/detach/".concat(this.author.id, "/").concat(book_id);
       this.axios.post(uri).then(function (response) {
         _this6.authorBooks.splice(index, 1);
+      })["catch"](function (error) {
+        _this6.validationErrors = error.response.data.errors;
       });
     },
     deleteBook: function deleteBook(id, index) {
@@ -2328,6 +2339,8 @@ __webpack_require__.r(__webpack_exports__);
       var uri = "http://library.dev.local/api/book/delete/".concat(id);
       this.axios["delete"](uri).then(function (response) {
         _this7.authorBooks.splice(index, 1);
+      })["catch"](function (error) {
+        _this7.validationErrors = error.response.data.errors;
       });
     },
     toogleBookForm: function toogleBookForm() {
