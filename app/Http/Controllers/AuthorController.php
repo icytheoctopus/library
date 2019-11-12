@@ -6,7 +6,6 @@ use App\Author;
 use App\Book;
 use App\Http\Resources\AuthorResource;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class AuthorController extends Controller
@@ -57,19 +56,19 @@ class AuthorController extends Controller
                 'messages' => $validator->messages(),
             ],422);
         }
-        else{
-            $author = new Author([
-                'firstname' => $request->get('firstname'),
-                'lastname' => $request->get('lastname'),
-                'age' => $request->get('age'),
-                'address' => $request->get('address')
-            ]);
 
-            $author->save();
-            return response()->json([
-                'success' => true,
-            ]);
-        }
+        $author = new Author([
+            'firstname' => $request->get('firstname'),
+            'lastname' => $request->get('lastname'),
+            'age' => $request->get('age'),
+            'address' => $request->get('address')
+        ]);
+
+        $author->save();
+        return response()->json([
+            'success' => true,
+            'messages' => 'Author successfully created!',
+        ]);
     }
 
     /**
@@ -82,6 +81,7 @@ class AuthorController extends Controller
     {
         $author = Author::find($id);
         $author->books = $author->books()->get();
+
         return response()->json($author);
     }
 
@@ -95,7 +95,6 @@ class AuthorController extends Controller
         if ($author){
             $books = Book::orderBy('name')->get();
             $authorBooks = $author->books()->get();
-            Log::debug($authorBooks);
 
             return response()->json(['author' => $author, 'authorBooks' => $authorBooks, 'books' => $books]);
         }
@@ -137,7 +136,7 @@ class AuthorController extends Controller
 
         return response()->json([
             'success' => true,
-            'messages' => 'Successfully updated author',
+            'messages' => 'Author successfully updated!',
         ]);
     }
 
@@ -150,7 +149,10 @@ class AuthorController extends Controller
         $author = Author::find($id);
         $author->delete();
 
-        return response()->json('successfully deleted');
+        return response()->json([
+            'success' => true,
+            'messages' => 'Author successfully deleted!',
+        ]);
     }
 
     /**
@@ -160,7 +162,7 @@ class AuthorController extends Controller
     public function detach($author_id, $book_id)
     {
         $author = Author::find($author_id);
-        $book = Author::find($book_id);
+        $book = Book::find($book_id);
 
         $author->books()->detach($book);
 

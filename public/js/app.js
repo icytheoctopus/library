@@ -1904,6 +1904,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2015,6 +2016,13 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
 /* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__);
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2302,6 +2310,7 @@ __webpack_require__.r(__webpack_exports__);
             name: 'authors'
           });
         })["catch"](function (error) {
+          console.log(error);
           _this2.laravelValidationErrors.author = error.response.data.errors;
         });
       }
@@ -2404,12 +2413,7 @@ __webpack_require__.r(__webpack_exports__);
       this.suggestionsOpen = true;
       this.bookInputChange();
     },
-    focusOut: function focusOut() {
-      var _this8 = this;
-
-      setTimeout(function () {
-        return _this8.closeSuggestions();
-      }, 200);
+    focusOut: function focusOut() {// setTimeout(() => this.closeSuggestions(), 200);
     }
   }
 });
@@ -2425,6 +2429,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
 //
 //
 //
@@ -7097,7 +7103,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.error-message{\n    color: red;\n    font-size: 12px;\n}\n.form-group--error input{\n    border-color: red !important;\n}\n.form-group--error label{\n     color: red;\n}\n", ""]);
+exports.push([module.i, "\n.error-message{\n    color: red;\n    font-size: 12px;\n}\n.form-group--error input{\n    border-color: red !important;\n}\n.form-group--error label{\n    color: red;\n}\nul.suggestion{\n    background-color: white;\n    border: 1px solid #ced4da;\n    border-radius: 4px;\n    list-style: none;\n\n    padding: 0;\n    width: 100%;\n    max-height: 200px;\n    overflow: auto;\n}\nul.suggestion li{\n    padding: 5px;\n    font-size: 15px;\n    width: 100%;\n}\nul.suggestion li:hover{\n    background-color: #3490dc;\n    color: white;\n}\n", ""]);
 
 // exports
 
@@ -38672,14 +38678,12 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("h1", [_vm._v("Authors")]),
-    _vm._v(" "),
     _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-md-10" }),
+      _vm._m(0),
       _vm._v(" "),
       _c(
         "div",
-        { staticClass: "col-md-2" },
+        { staticClass: "col-md-2 col-sm-12" },
         [
           _c(
             "router-link",
@@ -38693,10 +38697,11 @@ var render = function() {
         1
       )
     ]),
+    _vm._v(" "),
     _c("br"),
     _vm._v(" "),
     _c("table", { staticClass: "table table-hover" }, [
-      _vm._m(0),
+      _vm._m(1),
       _vm._v(" "),
       _c(
         "tbody",
@@ -38718,7 +38723,7 @@ var render = function() {
                 _c(
                   "router-link",
                   {
-                    staticClass: "btn btn-primary",
+                    staticClass: "btn btn-primary btn-block",
                     attrs: {
                       to: { name: "edit-author", params: { id: author.id } }
                     }
@@ -38733,7 +38738,7 @@ var render = function() {
               _c(
                 "button",
                 {
-                  staticClass: "btn btn-danger",
+                  staticClass: "btn btn-danger btn-block",
                   on: {
                     click: function($event) {
                       $event.preventDefault()
@@ -38756,6 +38761,14 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-10 col-sm-12" }, [
+      _c("h1", [_vm._v("Authors")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
         _c("th", [_vm._v("ID")]),
@@ -38768,7 +38781,9 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Address")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Actions")])
+        _c("th", { staticClass: "text-center", attrs: { colspan: "2" } }, [
+          _vm._v("Actions")
+        ])
       ])
     ])
   }
@@ -38972,8 +38987,6 @@ var render = function() {
           )
         ]),
         _vm._v(" "),
-        _c("h3", [_vm._v("Personal data")]),
-        _vm._v(" "),
         _c("div", { staticClass: "row" }, [
           _c("div", { staticClass: "col-md-6" }, [
             _c(
@@ -38983,7 +38996,7 @@ var render = function() {
                 class: {
                   "form-group--error":
                     _vm.$v.author.firstname.$error ||
-                    this.laravelValidationErrors.firstname
+                    this.laravelValidationErrors.author.firstname
                 }
               },
               [
@@ -39015,7 +39028,7 @@ var render = function() {
                 }),
                 _vm._v(" "),
                 (_vm.$v.author.$dirty && _vm.$v.author.firstname.$invalid) ||
-                this.laravelValidationErrors.firstname
+                this.laravelValidationErrors.author.firstname
                   ? _c("span", {
                       staticClass: "error-message",
                       domProps: { innerHTML: _vm._s(_vm.firstnameErrorMessage) }
@@ -39033,7 +39046,7 @@ var render = function() {
                 class: {
                   "form-group--error":
                     _vm.$v.author.lastname.$error ||
-                    this.laravelValidationErrors.lastname
+                    this.laravelValidationErrors.author.lastname
                 }
               },
               [
@@ -39065,7 +39078,7 @@ var render = function() {
                 }),
                 _vm._v(" "),
                 (_vm.$v.author.$dirty && _vm.$v.author.lastname.$invalid) ||
-                this.laravelValidationErrors.lastname
+                this.laravelValidationErrors.author.lastname
                   ? _c("span", {
                       staticClass: "error-message",
                       domProps: { innerHTML: _vm._s(_vm.lastnameErrorMessage) }
@@ -39084,7 +39097,8 @@ var render = function() {
                 staticClass: "form-group",
                 class: {
                   "form-group--error":
-                    _vm.$v.author.age.$error || this.laravelValidationErrors.age
+                    _vm.$v.author.age.$error ||
+                    this.laravelValidationErrors.author.age
                 }
               },
               [
@@ -39116,7 +39130,7 @@ var render = function() {
                 }),
                 _vm._v(" "),
                 (_vm.$v.author.$dirty && _vm.$v.author.age.$invalid) ||
-                this.laravelValidationErrors.age
+                this.laravelValidationErrors.author.age
                   ? _c("span", {
                       staticClass: "error-message",
                       domProps: { innerHTML: _vm._s(_vm.ageErrorMessage) }
@@ -39134,7 +39148,7 @@ var render = function() {
                 class: {
                   "form-group--error":
                     _vm.$v.author.address.$error ||
-                    this.laravelValidationErrors.address
+                    this.laravelValidationErrors.author.address
                 }
               },
               [
@@ -39166,7 +39180,7 @@ var render = function() {
                 }),
                 _vm._v(" "),
                 (_vm.$v.author.$dirty && _vm.$v.author.address.$invalid) ||
-                this.laravelValidationErrors.address
+                this.laravelValidationErrors.author.address
                   ? _c("span", {
                       staticClass: "error-message",
                       domProps: { innerHTML: _vm._s(_vm.addressErrorMessage) }
@@ -39179,26 +39193,28 @@ var render = function() {
         _vm._v(" "),
         _c("br"),
         _vm._v(" "),
-        _c("h3", [_vm._v("Author's books")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "text-right" }, [
-          _vm.creatingBook
-            ? _c(
-                "button",
-                {
-                  staticClass: "btn btn-primary",
-                  on: { click: _vm.toogleBookForm }
-                },
-                [_vm._v("Close")]
-              )
-            : _c(
-                "button",
-                {
-                  staticClass: "btn btn-outline-primary",
-                  on: { click: _vm.toogleBookForm }
-                },
-                [_vm._v("Attach new Book")]
-              )
+        _c("div", { staticClass: "row" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-md-2 col-sm-12" }, [
+            _vm.creatingBook
+              ? _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary btn-block",
+                    on: { click: _vm.toogleBookForm }
+                  },
+                  [_vm._v("Close")]
+                )
+              : _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-outline-primary btn-block",
+                    on: { click: _vm.toogleBookForm }
+                  },
+                  [_vm._v("Attach new Book")]
+                )
+          ])
         ]),
         _vm._v(" "),
         _vm.creatingBook
@@ -39210,7 +39226,9 @@ var render = function() {
                     {
                       staticClass: "form-group",
                       class: {
-                        "form-group--error": _vm.$v.selectedBook.name.$error
+                        "form-group--error":
+                          _vm.$v.selectedBook.name.$error ||
+                          this.laravelValidationErrors.book.name
                       }
                     },
                     [
@@ -39248,11 +39266,15 @@ var render = function() {
                         }
                       }),
                       _vm._v(" "),
-                      _vm.$v.selectedBook.$dirty &&
-                      _vm.$v.selectedBook.name.$invalid
-                        ? _c("span", { staticClass: "error-message" }, [
-                            _vm._v(_vm._s(_vm.booknameErrorMessage))
-                          ])
+                      (_vm.$v.selectedBook.$dirty &&
+                        _vm.$v.selectedBook.name.$invalid) ||
+                      this.laravelValidationErrors.book.name
+                        ? _c("span", {
+                            staticClass: "error-message",
+                            domProps: {
+                              innerHTML: _vm._s(_vm.booknameErrorMessage)
+                            }
+                          })
                         : _vm._e(),
                       _vm._v(" "),
                       _c("div", [
@@ -39267,7 +39289,7 @@ var render = function() {
                                 expression: "suggestionsOpen"
                               }
                             ],
-                            staticStyle: { width: "100%" }
+                            staticClass: "suggestion"
                           },
                           _vm._l(_vm.books, function(suggestion, index) {
                             return _c(
@@ -39290,9 +39312,9 @@ var render = function() {
                               },
                               [
                                 _vm._v(
-                                  "\n                                    " +
+                                  "\n                                " +
                                     _vm._s(suggestion.name) +
-                                    "\n                                "
+                                    "\n                            "
                                 )
                               ]
                             )
@@ -39313,7 +39335,8 @@ var render = function() {
                       staticClass: "form-group",
                       class: {
                         "form-group--error":
-                          _vm.$v.selectedBook.release_date.$error
+                          _vm.$v.selectedBook.release_date.$error ||
+                          this.laravelValidationErrors.book.release_date
                       }
                     },
                     [
@@ -39329,7 +39352,10 @@ var render = function() {
                           }
                         ],
                         staticClass: "form-control",
-                        attrs: { type: "date" },
+                        attrs: {
+                          type: "date",
+                          disabled: _vm.selectedBook.preselected !== ""
+                        },
                         domProps: { value: _vm.selectedBook.release_date },
                         on: {
                           keyup: _vm.bookInputChange,
@@ -39349,11 +39375,15 @@ var render = function() {
                         }
                       }),
                       _vm._v(" "),
-                      _vm.$v.selectedBook.$dirty &&
-                      _vm.$v.selectedBook.release_date.$invalid
-                        ? _c("span", { staticClass: "error-message" }, [
-                            _vm._v(_vm._s(_vm.bookdateErrorMessage))
-                          ])
+                      (_vm.$v.selectedBook.$dirty &&
+                        _vm.$v.selectedBook.release_date.$invalid) ||
+                      this.laravelValidationErrors.book.release_date
+                        ? _c("span", {
+                            staticClass: "error-message",
+                            domProps: {
+                              innerHTML: _vm._s(_vm.bookdateErrorMessage)
+                            }
+                          })
                         : _vm._e()
                     ]
                   )
@@ -39386,8 +39416,8 @@ var render = function() {
             ])
           : _vm._e(),
         _vm._v(" "),
-        _c("table", { staticClass: "table table-hover" }, [
-          _vm._m(0),
+        _c("table", { staticClass: "table table-hover mt-4" }, [
+          _vm._m(1),
           _vm._v(" "),
           _c(
             "tbody",
@@ -39405,44 +39435,48 @@ var render = function() {
                     _c(
                       "router-link",
                       {
-                        staticClass: "btn btn-primary",
+                        staticClass: "btn btn-primary btn-block",
                         attrs: {
                           to: { name: "edit-book", params: { id: book.id } }
                         }
                       },
                       [_vm._v("Edit")]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-outline-danger",
-                        on: {
-                          click: function($event) {
-                            $event.preventDefault()
-                            return _vm.detachBook(book.id, index)
-                          }
-                        }
-                      },
-                      [_vm._v("Detach")]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-danger",
-                        on: {
-                          click: function($event) {
-                            $event.preventDefault()
-                            return _vm.deleteBook(book.id, index)
-                          }
-                        }
-                      },
-                      [_vm._v("Delete")]
                     )
                   ],
                   1
-                )
+                ),
+                _vm._v(" "),
+                _c("td", [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-outline-danger btn-block",
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.detachBook(book.id, index)
+                        }
+                      }
+                    },
+                    [_vm._v("Detach")]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger btn-block",
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.deleteBook(book.id, index)
+                        }
+                      }
+                    },
+                    [_vm._v("Delete")]
+                  )
+                ])
               ])
             }),
             0
@@ -39472,6 +39506,14 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-10 col-sm-12" }, [
+      _c("h3", [_vm._v("Author's books")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
         _c("th", [_vm._v("ID")]),
@@ -39480,7 +39522,9 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Release Date")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Actions")])
+        _c("th", { staticClass: "text-center", attrs: { colspan: "3" } }, [
+          _vm._v("Actions")
+        ])
       ])
     ])
   }
@@ -39507,14 +39551,12 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("h1", [_vm._v("Books")]),
-    _vm._v(" "),
     _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-md-10" }),
+      _vm._m(0),
       _vm._v(" "),
       _c(
         "div",
-        { staticClass: "col-md-2" },
+        { staticClass: "col-md-2 col-sm-12" },
         [
           _c(
             "router-link",
@@ -39528,10 +39570,11 @@ var render = function() {
         1
       )
     ]),
+    _vm._v(" "),
     _c("br"),
     _vm._v(" "),
     _c("table", { staticClass: "table table-hover" }, [
-      _vm._m(0),
+      _vm._m(1),
       _vm._v(" "),
       _c(
         "tbody",
@@ -39549,7 +39592,7 @@ var render = function() {
                 _c(
                   "router-link",
                   {
-                    staticClass: "btn btn-primary",
+                    staticClass: "btn btn-primary btn-block",
                     attrs: {
                       to: { name: "edit-book", params: { id: book.id } }
                     }
@@ -39564,7 +39607,7 @@ var render = function() {
               _c(
                 "button",
                 {
-                  staticClass: "btn btn-danger",
+                  staticClass: "btn btn-danger btn-block",
                   on: {
                     click: function($event) {
                       $event.preventDefault()
@@ -39587,13 +39630,25 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-10 col-sm-12" }, [
+      _c("h1", [_vm._v("Books")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
         _c("th", [_vm._v("ID")]),
         _vm._v(" "),
         _c("th", [_vm._v("Name")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Release Date")])
+        _c("th", [_vm._v("Release Date")]),
+        _vm._v(" "),
+        _c("th", { staticClass: "text-center", attrs: { colspan: "2" } }, [
+          _vm._v("Actions")
+        ])
       ])
     ])
   }

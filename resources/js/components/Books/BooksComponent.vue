@@ -1,19 +1,21 @@
 <template>
     <div>
-        <h1>Books</h1>
         <div class="row">
-            <div class="col-md-10"></div>
-            <div class="col-md-2">
+            <div class="col-md-10 col-sm-12">
+                <h1>Books</h1>
+            </div>
+            <div class="col-md-2 col-sm-12">
                 <router-link :to="{ name: 'create-book' }" class="btn btn-primary">Create Book</router-link>
             </div>
-        </div><br />
-
+        </div>
+        <br>
         <table class="table table-hover">
             <thead>
             <tr>
                 <th>ID</th>
                 <th>Name</th>
                 <th>Release Date</th>
+                <th colspan="2" class="text-center">Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -21,8 +23,8 @@
                 <td>{{ book.id }}</td>
                 <td>{{ book.name }}</td>
                 <td>{{ book.release_date }}</td>
-                <td><router-link :to="{name: 'edit-book', params: { id: book.id }}" class="btn btn-primary">Edit</router-link></td>
-                <td><button class="btn btn-danger" @click.prevent="deleteBook(book.id)">Delete</button></td>
+                <td><router-link :to="{name: 'edit-book', params: { id: book.id }}" class="btn btn-primary btn-block">Edit</router-link></td>
+                <td><button class="btn btn-danger btn-block" @click.prevent="deleteBook(book.id)">Delete</button></td>
             </tr>
             </tbody>
         </table>

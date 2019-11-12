@@ -1,7 +1,6 @@
 <template>
     <div v-if="author">
         <h1>{{ author.firstname }} {{ author.lastname }}</h1>
-        <h3>Personal data</h3>
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group" :class="{'form-group--error' : $v.author.firstname.$error || this.laravelValidationErrors.author.firstname }">
@@ -65,71 +64,74 @@
         <br>
 
         <!-- Attach book -->
-        <h3>Author's books</h3>
-        <div class="text-right">
-            <button class="btn btn-primary" v-if="creatingBook" @click="toogleBookForm">Close</button>
-            <button class="btn btn-outline-primary" v-else @click="toogleBookForm">Attach new Book</button>
+        <div class="row">
+            <div class="col-md-10 col-sm-12">
+                <h3>Author's books</h3>
+            </div>
+            <div class="col-md-2 col-sm-12">
+                <button class="btn btn-primary btn-block" v-if="creatingBook" @click="toogleBookForm">Close</button>
+                <button class="btn btn-outline-primary btn-block" v-else @click="toogleBookForm">Attach new Book</button>
+            </div>
         </div>
         <div v-if="creatingBook">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group" :class="{'form-group--error' : $v.selectedBook.name.$error || this.laravelValidationErrors.book.name}">
-                            <label>Book Name</label>
-                            <input type="text"
-                                   class="form-control"
-                                   v-model="selectedBook.name"
-                                   @keyup="bookInputChange"
-                                   @focusin="focusIn"
-                                   @focusout="focusOut"
-                                   @change="$v.selectedBook.$touch()"
-                            >
-                            <span class="error-message"
-                                  v-if="($v.selectedBook.$dirty && $v.selectedBook.name.$invalid) || this.laravelValidationErrors.book.name"
-                                  v-html="booknameErrorMessage"
-                            ></span>
-                            <div>
-                                <ul class="suggestion" v-show="suggestionsOpen">
-                                    <li v-for="(suggestion, index) in books" :key="suggestion.id" @click="suggestionClick(index)" v-show="suggestion.show">
-                                        {{ suggestion.name }}
-                                    </li>
-                                </ul>
-                            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group" :class="{'form-group--error' : $v.selectedBook.name.$error || this.laravelValidationErrors.book.name}">
+                        <label>Book Name</label>
+                        <input type="text"
+                               class="form-control"
+                               v-model="selectedBook.name"
+                               @keyup="bookInputChange"
+                               @focusin="focusIn"
+                               @focusout="focusOut"
+                               @change="$v.selectedBook.$touch()"
+                        >
+                        <span class="error-message"
+                              v-if="($v.selectedBook.$dirty && $v.selectedBook.name.$invalid) || this.laravelValidationErrors.book.name"
+                              v-html="booknameErrorMessage"
+                        ></span>
+                        <div>
+                            <ul class="suggestion" v-show="suggestionsOpen">
+                                <li v-for="(suggestion, index) in books" :key="suggestion.id" @click="suggestionClick(index)" v-show="suggestion.show">
+                                    {{ suggestion.name }}
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group" :class="{'form-group--error' : $v.selectedBook.release_date.$error || this.laravelValidationErrors.book.release_date}">
-                            <label>Release Date</label>
-                            <input type="date"
-                                   class="form-control"
-                                   v-model="selectedBook.release_date"
-                                   :disabled="selectedBook.preselected !==''"
-                                   @keyup="bookInputChange"
-                                   @change="$v.selectedBook.$touch()"
-                            >
-                            <span class="error-message"
-                                  v-if="($v.selectedBook.$dirty && $v.selectedBook.release_date.$invalid) || this.laravelValidationErrors.book.release_date"
-                                  v-html="bookdateErrorMessage"
-                            ></span>
-                        </div>
-                    </div>
-                </div>
-                <br />
-                <div class="form-group text-center">
-                    <button class="btn btn-outline-success" @click="attachBook" v-if="selectedBook.preselected !== ''">Attach Selected Book</button>
-                    <button class="btn btn-success" @click="createAttachBook" v-else>Create And Attach Book</button>
-                </div>
-                <br>
             </div>
-
-        <table class="table table-hover">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group" :class="{'form-group--error' : $v.selectedBook.release_date.$error || this.laravelValidationErrors.book.release_date}">
+                        <label>Release Date</label>
+                        <input type="date"
+                               class="form-control"
+                               v-model="selectedBook.release_date"
+                               :disabled="selectedBook.preselected !==''"
+                               @keyup="bookInputChange"
+                               @change="$v.selectedBook.$touch()"
+                        >
+                        <span class="error-message"
+                              v-if="($v.selectedBook.$dirty && $v.selectedBook.release_date.$invalid) || this.laravelValidationErrors.book.release_date"
+                              v-html="bookdateErrorMessage"
+                        ></span>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="form-group text-center">
+                <button class="btn btn-outline-success" @click="attachBook" v-if="selectedBook.preselected !== ''">Attach Selected Book</button>
+                <button class="btn btn-success" @click="createAttachBook" v-else>Create And Attach Book</button>
+            </div>
+            <br>
+        </div>
+        <table class="table table-hover mt-4">
             <thead>
             <tr>
                 <th>ID</th>
                 <th>Name</th>
                 <th>Release Date</th>
-                <th>Actions</th>
+                <th colspan="3" class="text-center">Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -137,11 +139,9 @@
                 <td>{{ book.id }}</td>
                 <td>{{ book.name }}</td>
                 <td>{{ book.release_date }}</td>
-                <td>
-                    <router-link :to="{name: 'edit-book', params: { id: book.id }}" class="btn btn-primary">Edit</router-link>
-                    <button class="btn btn-outline-danger" @click.prevent="detachBook(book.id, index)">Detach</button>
-                    <button class="btn btn-danger" @click.prevent="deleteBook(book.id, index)">Delete</button>
-                </td>
+                <td><router-link :to="{name: 'edit-book', params: { id: book.id }}" class="btn btn-primary btn-block">Edit</router-link></td>
+                <td><button class="btn btn-outline-danger btn-block" @click.prevent="detachBook(book.id, index)">Detach</button></td>
+                <td><button class="btn btn-danger btn-block" @click.prevent="deleteBook(book.id, index)">Delete</button></td>
             </tr>
             </tbody>
         </table>
