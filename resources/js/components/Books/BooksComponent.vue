@@ -1,11 +1,11 @@
 <template>
     <div>
         <div class="row">
-            <div class="col-md-10 col-sm-12">
+            <div class="col-md-9 col-sm-12">
                 <h1>Books</h1>
             </div>
-            <div class="col-md-2 col-sm-12">
-                <router-link :to="{ name: 'create-book' }" class="btn btn-primary">Create Book</router-link>
+            <div class="col-md-3 col-sm-12 text-right">
+                <router-link :to="{ name: 'create-book' }" class="btn btn-primary btn-block">Create Book</router-link>
             </div>
         </div>
         <br>

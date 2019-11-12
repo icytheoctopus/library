@@ -38,7 +38,7 @@ class AuthorController extends Controller
             'firstname' => 'required|min:3|max:50',
             'lastname' => 'required|min:3|max:50',
             'age' => 'required|numeric|between:15,100',
-            'address' => 'max:200',
+            'address' => 'required|max:200',
         ];
 
         $messages = [
@@ -112,7 +112,7 @@ class AuthorController extends Controller
             'firstname' => 'required|min:3|max:50|ends_with:foo',
             'lastname' => 'required|min:3|max:50',
             'age' => 'required|numeric|between:15,100',
-            'address' => 'max:200',
+            'address' => 'required|max:200',
         ];
 
         $messages = [

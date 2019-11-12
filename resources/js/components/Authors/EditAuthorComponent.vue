@@ -65,10 +65,10 @@
 
         <!-- Attach book -->
         <div class="row">
-            <div class="col-md-10 col-sm-12">
+            <div class="col-md-9 col-sm-12">
                 <h3>Author's books</h3>
             </div>
-            <div class="col-md-2 col-sm-12">
+            <div class="col-md-3 col-sm-12 text-right">
                 <button class="btn btn-primary btn-block" v-if="creatingBook" @click="toogleBookForm">Close</button>
                 <button class="btn btn-outline-primary btn-block" v-else @click="toogleBookForm">Attach new Book</button>
             </div>
@@ -80,6 +80,7 @@
                         <label>Book Name</label>
                         <input type="text"
                                class="form-control"
+                               placeholder="Select or existing or create new book"
                                v-model="selectedBook.name"
                                @keyup="bookInputChange"
                                @focusin="focusIn"
@@ -300,7 +301,6 @@
                     this.axios.post(uri, this.author).then(response => {
                         this.$router.push({name: 'authors'});
                     }).catch(error => {
-                        console.log(error);
                         this.laravelValidationErrors.author = error.response.data.errors;
                     });
                 }

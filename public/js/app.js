@@ -1920,12 +1920,12 @@ __webpack_require__.r(__webpack_exports__);
     });
   },
   methods: {
-    deleteAuthor: function deleteAuthor(id) {
+    deleteAuthor: function deleteAuthor(id, index) {
       var _this2 = this;
 
       var uri = "http://library.dev.local/api/author/delete/".concat(id);
       this.axios["delete"](uri).then(function (response) {
-        _this2.authors.splice(_this2.author.indexOf(id), 1);
+        _this2.authors.splice(index, 1);
       });
     }
   }
@@ -1942,6 +1942,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -1982,22 +1984,122 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      author: {}
+      author: {},
+      laravelValidationErrors: {
+        author: {},
+        book: {}
+      }
     };
+  },
+  validations: {
+    author: {
+      firstname: {
+        required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"] // minLength: minLength(3),
+        // maxLength: maxLength(50)
+
+      },
+      lastname: {
+        required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"],
+        minLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["minLength"])(3),
+        maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["maxLength"])(50)
+      },
+      age: {
+        required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"],
+        between: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["between"])(15, 100)
+      },
+      address: {
+        required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"],
+        maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["maxLength"])(200)
+      }
+    }
+  },
+  computed: {
+    firstnameErrorMessage: function firstnameErrorMessage() {
+      if (this.laravelValidationErrors.author.firstname) {
+        return this.laravelValidationErrors.author.firstname.join("<br>");
+      } else if (!this.$v.author.firstname.required) {
+        return 'Firstname is required';
+      } else if (!this.$v.author.firstname.minLength) {
+        return 'Firstname should be at least 3 characters long';
+      } else if (!this.$v.author.firstname.maxLength) {
+        return 'Firstname should not be longer then 50 characters';
+      }
+    },
+    lastnameErrorMessage: function lastnameErrorMessage() {
+      if (this.laravelValidationErrors.author.lastname) {
+        return this.laravelValidationErrors.author.lastname.join("<br>");
+      } else if (!this.$v.author.lastname.required) {
+        return 'Lastname is required';
+      } else if (!this.$v.author.lastname.minLength) {
+        return 'Lastname should be at least 3 characters long';
+      } else if (!this.$v.author.lastname.maxLength) {
+        return 'Lastname should not be longer then 50 characters';
+      }
+    },
+    ageErrorMessage: function ageErrorMessage() {
+      if (this.laravelValidationErrors.author.age) {
+        return this.laravelValidationErrors.author.age.join("<br>");
+      } else if (!this.$v.author.age.required) {
+        return 'Age is required';
+      } else if (!this.$v.author.age.between) {
+        return 'Age range is 15-95';
+      }
+    },
+    addressErrorMessage: function addressErrorMessage() {
+      if (this.laravelValidationErrors.author.address) {
+        return this.laravelValidationErrors.author.address.join("<br>");
+      } else if (!this.$v.author.address.required) {
+        return 'Address is required';
+      } else if (!this.$v.author.address.maxLength) {
+        return 'Address should not be longer then 200 characters';
+      }
+    }
   },
   methods: {
     addAuthor: function addAuthor() {
       var _this = this;
 
-      console.log(this.author);
       var uri = 'http://library.dev.local/api/author/create';
       this.axios.post(uri, this.author).then(function (response) {
         _this.$router.push({
           name: 'authors'
         });
+      })["catch"](function (error) {
+        _this.laravelValidationErrors.author = error.response.data.errors;
       });
     }
   }
@@ -2016,6 +2118,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
 /* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__);
+//
 //
 //
 //
@@ -2310,7 +2413,6 @@ __webpack_require__.r(__webpack_exports__);
             name: 'authors'
           });
         })["catch"](function (error) {
-          console.log(error);
           _this2.laravelValidationErrors.author = error.response.data.errors;
         });
       }
@@ -7087,6 +7189,25 @@ __webpack_require__.r(__webpack_exports__);
 
 }));
 //# sourceMappingURL=bootstrap.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Authors/CreateAuthorComponent.vue?vue&type=style&index=0&lang=css&":
+/*!***********************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Authors/CreateAuthorComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.error-message{\n    color: red;\n    font-size: 12px;\n}\n.form-group--error input{\n    border-color: red !important;\n}\n.form-group--error label{\n    color: red;\n}\nul.suggestion{\n    background-color: white;\n    border: 1px solid #ced4da;\n    border-radius: 4px;\n    list-style: none;\n\n    padding: 0;\n    width: 100%;\n    max-height: 200px;\n    overflow: auto;\n}\nul.suggestion li{\n    padding: 5px;\n    font-size: 15px;\n    width: 100%;\n}\nul.suggestion li:hover{\n    background-color: #3490dc;\n    color: white;\n}\n", ""]);
+
+// exports
 
 
 /***/ }),
@@ -37968,6 +38089,36 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Authors/CreateAuthorComponent.vue?vue&type=style&index=0&lang=css&":
+/*!***************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Authors/CreateAuthorComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./CreateAuthorComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Authors/CreateAuthorComponent.vue?vue&type=style&index=0&lang=css&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Authors/EditAuthorComponent.vue?vue&type=style&index=0&lang=css&":
 /*!*************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Authors/EditAuthorComponent.vue?vue&type=style&index=0&lang=css& ***!
@@ -38683,12 +38834,12 @@ var render = function() {
       _vm._v(" "),
       _c(
         "div",
-        { staticClass: "col-md-2 col-sm-12" },
+        { staticClass: "col-md-3 col-sm-12 text-right" },
         [
           _c(
             "router-link",
             {
-              staticClass: "btn btn-primary",
+              staticClass: "btn btn-primary btn-block",
               attrs: { to: { name: "create-author" } }
             },
             [_vm._v("Create Author")]
@@ -38705,7 +38856,7 @@ var render = function() {
       _vm._v(" "),
       _c(
         "tbody",
-        _vm._l(_vm.authors, function(author) {
+        _vm._l(_vm.authors, function(author, index) {
           return _c("tr", { key: author.id }, [
             _c("td", [_vm._v(_vm._s(author.id))]),
             _vm._v(" "),
@@ -38742,7 +38893,7 @@ var render = function() {
                   on: {
                     click: function($event) {
                       $event.preventDefault()
-                      return _vm.deleteAuthor(author.id)
+                      return _vm.deleteAuthor(author.id, index)
                     }
                   }
                 },
@@ -38761,7 +38912,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-10 col-sm-12" }, [
+    return _c("div", { staticClass: "col-md-9 col-sm-12" }, [
       _c("h1", [_vm._v("Authors")])
     ])
   },
@@ -38809,155 +38960,225 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
+  return _c("div", { staticClass: "container" }, [
     _c("h1", [_vm._v("Create Author")]),
     _vm._v(" "),
-    _c(
-      "form",
-      {
-        on: {
-          submit: function($event) {
-            $event.preventDefault()
-            return _vm.addAuthor($event)
-          }
-        }
-      },
-      [
-        _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-md-6" }, [
-            _c("div", { staticClass: "form-group" }, [
-              _c("label", [_vm._v("Firstname")]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.author.firstname,
-                    expression: "author.firstname"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: { type: "text" },
-                domProps: { value: _vm.author.firstname },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.author, "firstname", $event.target.value)
-                  }
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-md-6" }, [
+        _c(
+          "div",
+          {
+            staticClass: "form-group",
+            class: {
+              "form-group--error":
+                _vm.$v.author.firstname.$error ||
+                this.laravelValidationErrors.author.firstname
+            }
+          },
+          [
+            _c("label", [_vm._v("Firstname")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.author.firstname,
+                  expression: "author.firstname"
                 }
-              })
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-md-6" }, [
-            _c("div", { staticClass: "form-group" }, [
-              _c("label", [_vm._v("Lastname")]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.author.lastname,
-                    expression: "author.lastname"
+              ],
+              staticClass: "form-control",
+              attrs: { type: "text" },
+              domProps: { value: _vm.author.firstname },
+              on: {
+                change: function($event) {
+                  return _vm.$v.author.$touch()
+                },
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
                   }
-                ],
-                staticClass: "form-control",
-                attrs: { type: "text" },
-                domProps: { value: _vm.author.lastname },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.author, "lastname", $event.target.value)
-                  }
+                  _vm.$set(_vm.author, "firstname", $event.target.value)
                 }
-              })
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-md-6" }, [
-            _c("div", { staticClass: "form-group" }, [
-              _c("label", [_vm._v("Age")]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.author.age,
-                    expression: "author.age"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: { type: "number" },
-                domProps: { value: _vm.author.age },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.author, "age", $event.target.value)
-                  }
+              }
+            }),
+            _vm._v(" "),
+            (_vm.$v.author.$dirty && _vm.$v.author.firstname.$invalid) ||
+            this.laravelValidationErrors.author.firstname
+              ? _c("span", {
+                  staticClass: "error-message",
+                  domProps: { innerHTML: _vm._s(_vm.firstnameErrorMessage) }
+                })
+              : _vm._e()
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-6" }, [
+        _c(
+          "div",
+          {
+            staticClass: "form-group",
+            class: {
+              "form-group--error":
+                _vm.$v.author.lastname.$error ||
+                this.laravelValidationErrors.author.lastname
+            }
+          },
+          [
+            _c("label", [_vm._v("Lastname")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.author.lastname,
+                  expression: "author.lastname"
                 }
-              })
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-md-6" }, [
-            _c("div", { staticClass: "form-group" }, [
-              _c("label", [_vm._v("Address")]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.author.address,
-                    expression: "author.address"
+              ],
+              staticClass: "form-control",
+              attrs: { type: "text" },
+              domProps: { value: _vm.author.lastname },
+              on: {
+                change: function($event) {
+                  return _vm.$v.author.$touch()
+                },
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
                   }
-                ],
-                staticClass: "form-control",
-                attrs: { type: "text" },
-                domProps: { value: _vm.author.address },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.author, "address", $event.target.value)
-                  }
+                  _vm.$set(_vm.author, "lastname", $event.target.value)
                 }
-              })
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("br"),
-        _vm._v(" "),
-        _vm._m(0)
-      ]
-    )
+              }
+            }),
+            _vm._v(" "),
+            (_vm.$v.author.$dirty && _vm.$v.author.lastname.$invalid) ||
+            this.laravelValidationErrors.author.lastname
+              ? _c("span", {
+                  staticClass: "error-message",
+                  domProps: { innerHTML: _vm._s(_vm.lastnameErrorMessage) }
+                })
+              : _vm._e()
+          ]
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-md-6" }, [
+        _c(
+          "div",
+          {
+            staticClass: "form-group",
+            class: {
+              "form-group--error":
+                _vm.$v.author.age.$error ||
+                this.laravelValidationErrors.author.age
+            }
+          },
+          [
+            _c("label", [_vm._v("Age")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.author.age,
+                  expression: "author.age"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "number" },
+              domProps: { value: _vm.author.age },
+              on: {
+                change: function($event) {
+                  return _vm.$v.author.$touch()
+                },
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.author, "age", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            (_vm.$v.author.$dirty && _vm.$v.author.age.$invalid) ||
+            this.laravelValidationErrors.author.age
+              ? _c("span", {
+                  staticClass: "error-message",
+                  domProps: { innerHTML: _vm._s(_vm.ageErrorMessage) }
+                })
+              : _vm._e()
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-6" }, [
+        _c(
+          "div",
+          {
+            staticClass: "form-group",
+            class: {
+              "form-group--error":
+                _vm.$v.author.address.$error ||
+                this.laravelValidationErrors.author.address
+            }
+          },
+          [
+            _c("label", [_vm._v("Address")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.author.address,
+                  expression: "author.address"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "text" },
+              domProps: { value: _vm.author.address },
+              on: {
+                change: function($event) {
+                  return _vm.$v.author.$touch()
+                },
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.author, "address", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            (_vm.$v.author.$dirty && _vm.$v.author.address.$invalid) ||
+            this.laravelValidationErrors.author.address
+              ? _c("span", {
+                  staticClass: "error-message",
+                  domProps: { innerHTML: _vm._s(_vm.addressErrorMessage) }
+                })
+              : _vm._e()
+          ]
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c("br"),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group" }, [
+      _c(
+        "button",
+        { staticClass: "btn btn-success", on: { click: _vm.addAuthor } },
+        [_vm._v("Add Author")]
+      )
+    ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("button", { staticClass: "btn btn-primary" }, [
-        _vm._v("Create Author")
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -39196,7 +39417,7 @@ var render = function() {
         _c("div", { staticClass: "row" }, [
           _vm._m(0),
           _vm._v(" "),
-          _c("div", { staticClass: "col-md-2 col-sm-12" }, [
+          _c("div", { staticClass: "col-md-3 col-sm-12 text-right" }, [
             _vm.creatingBook
               ? _c(
                   "button",
@@ -39244,7 +39465,10 @@ var render = function() {
                           }
                         ],
                         staticClass: "form-control",
-                        attrs: { type: "text" },
+                        attrs: {
+                          type: "text",
+                          placeholder: "Select or existing or create new book"
+                        },
                         domProps: { value: _vm.selectedBook.name },
                         on: {
                           keyup: _vm.bookInputChange,
@@ -39506,7 +39730,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-10 col-sm-12" }, [
+    return _c("div", { staticClass: "col-md-9 col-sm-12" }, [
       _c("h3", [_vm._v("Author's books")])
     ])
   },
@@ -39556,12 +39780,12 @@ var render = function() {
       _vm._v(" "),
       _c(
         "div",
-        { staticClass: "col-md-2 col-sm-12" },
+        { staticClass: "col-md-3 col-sm-12 text-right" },
         [
           _c(
             "router-link",
             {
-              staticClass: "btn btn-primary",
+              staticClass: "btn btn-primary btn-block",
               attrs: { to: { name: "create-book" } }
             },
             [_vm._v("Create Book")]
@@ -39630,7 +39854,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-10 col-sm-12" }, [
+    return _c("div", { staticClass: "col-md-9 col-sm-12" }, [
       _c("h1", [_vm._v("Books")])
     ])
   },
@@ -57156,7 +57380,9 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _CreateAuthorComponent_vue_vue_type_template_id_4ff07694___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CreateAuthorComponent.vue?vue&type=template&id=4ff07694& */ "./resources/js/components/Authors/CreateAuthorComponent.vue?vue&type=template&id=4ff07694&");
 /* harmony import */ var _CreateAuthorComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CreateAuthorComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/Authors/CreateAuthorComponent.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _CreateAuthorComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CreateAuthorComponent.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/Authors/CreateAuthorComponent.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
 
 
 
@@ -57164,7 +57390,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
   _CreateAuthorComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
   _CreateAuthorComponent_vue_vue_type_template_id_4ff07694___WEBPACK_IMPORTED_MODULE_0__["render"],
   _CreateAuthorComponent_vue_vue_type_template_id_4ff07694___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
@@ -57193,6 +57419,22 @@ component.options.__file = "resources/js/components/Authors/CreateAuthorComponen
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateAuthorComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./CreateAuthorComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Authors/CreateAuthorComponent.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateAuthorComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Authors/CreateAuthorComponent.vue?vue&type=style&index=0&lang=css&":
+/*!****************************************************************************************************!*\
+  !*** ./resources/js/components/Authors/CreateAuthorComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \****************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateAuthorComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./CreateAuthorComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Authors/CreateAuthorComponent.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateAuthorComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateAuthorComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateAuthorComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateAuthorComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateAuthorComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
