@@ -3,9 +3,6 @@
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <router-link to="/" class="nav-link">Home</router-link>
-                </li>
-                <li class="nav-item">
                     <router-link to="/authors" class="nav-link">Authors</router-link>
                 </li>
                 <li class="nav-item">

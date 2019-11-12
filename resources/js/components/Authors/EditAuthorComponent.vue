@@ -9,9 +9,9 @@
                     <input type="text"
                            class="form-control"
                            v-model="author.firstname"
-                           @change="$v.$touch()"
+                           @change="$v.author.$touch()"
                     >
-                    <span v-if="$v.$dirty && $v.author.firstname.$invalid" class="error-message">{{ firstnameErrorMessage }}</span>
+                    <span v-if="$v.author.$dirty && $v.author.firstname.$invalid" class="error-message">{{ firstnameErrorMessage }}</span>
                 </div>
             </div>
             <div class="col-md-6">
@@ -20,9 +20,9 @@
                     <input type="text"
                            class="form-control"
                            v-model="author.lastname"
-                           @change="$v.$touch()"
+                           @change="$v.author.$touch()"
                     >
-                    <span v-if="$v.$dirty && $v.author.lastname.$invalid" class="error-message">{{ lastnameErrorMessage }}</span>
+                    <span v-if="$v.author.$dirty && $v.author.lastname.$invalid" class="error-message">{{ lastnameErrorMessage }}</span>
                 </div>
             </div>
         </div>
@@ -33,9 +33,9 @@
                     <input type="number"
                            class="form-control"
                            v-model="author.age"
-                           @change="$v.$touch()"
+                           @change="$v.author.$touch()"
                     >
-                    <span v-if="$v.$dirty && $v.author.age.$invalid" class="error-message">{{ ageErrorMessage }}</span>
+                    <span v-if="$v.author.$dirty && $v.author.age.$invalid" class="error-message">{{ ageErrorMessage }}</span>
                 </div>
             </div>
             <div class="col-md-6">
@@ -44,23 +44,22 @@
                     <input type="text"
                            class="form-control"
                            v-model="author.address"
-                           @change="$v.$touch()"
+                           @change="$v.author.$touch()"
                     >
-                    <span v-if="$v.$dirty && $v.author.address.$invalid" class="error-message">{{ addressErrorMessage }}</span>
+                    <span v-if="$v.author.$dirty && $v.author.address.$invalid" class="error-message">{{ addressErrorMessage }}</span>
                 </div>
             </div>
         </div>
         <br>
 
+
+        <!-- Attach book -->
         <h3>Author's books</h3>
         <div class="text-right">
             <button class="btn btn-primary" v-if="creatingBook" @click="toogleBookForm">Close</button>
             <button class="btn btn-outline-primary" v-else @click="toogleBookForm">Attach new Book</button>
         </div>
-
-        <!-- Attach book -->
-        <form @submit.prevent="createAttachBook">
-            <div v-if="creatingBook">
+        <div v-if="creatingBook">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group" :class="{'form-group--error' : $v.selectedBook.name.$error}">
@@ -71,9 +70,9 @@
                                    @keyup="bookInputChange"
                                    @focusin="focusIn"
                                    @focusout="focusOut"
-                                   @change="$v.$touch()"
+                                   @change="$v.selectedBook.$touch()"
                             >
-                            <span v-if="$v.$dirty && $v.selectedBook.name.$invalid" class="error-message">{{ booknameErrorMessage }}</span>
+                            <span v-if="$v.selectedBook.$dirty && $v.selectedBook.name.$invalid" class="error-message">{{ booknameErrorMessage }}</span>
                             <div>
                                 <ul style="width:100%" v-show="suggestionsOpen">
                                     <li v-for="(suggestion, index) in books" :key="suggestion.id" @click="suggestionClick(index)" v-show="suggestion.show">
@@ -92,9 +91,9 @@
                                    class="form-control"
                                    v-model="selectedBook.release_date"
                                    @keyup="bookInputChange"
-                                   @change="$v.$touch()"
+                                   @change="$v.selectedBook.$touch()"
                             >
-                            <span v-if="$v.$dirty && $v.selectedBook.release_date.$invalid" class="error-message">{{ bookdateErrorMessage }}</span>
+                            <span v-if="$v.selectedBook.$dirty && $v.selectedBook.release_date.$invalid" class="error-message">{{ bookdateErrorMessage }}</span>
                         </div>
                     </div>
                 </div>
@@ -105,7 +104,6 @@
                 </div>
                 <br>
             </div>
-        </form>
 
         <table class="table table-hover">
             <thead>
@@ -255,7 +253,7 @@
         },
         methods: {
             updateAuthor() {
-                this.$v.$touch();
+                this.$v.author.$touch();
                 if(!this.$v.author.$invalid){
                     let uri = `http://library.dev.local/api/author/update/${this.$route.params.id}`;
                     this.axios.post(uri, this.author).then((response) => {
@@ -270,7 +268,7 @@
                 });
             },
             createAttachBook() {
-                this.$v.$touch();
+                this.$v.selectedBook.$touch();
                 if(!this.$v.$invalid) {
                     let uri = 'http://library.dev.local/api/book/create/attach';
                     let data = {
@@ -283,7 +281,7 @@
                 }
             },
             attachBook() {
-                this.$v.$touch();
+                this.$v.selectedBook.$touch();
                 if(!this.$v.selectedBook.$invalid) {
                     let uri = `http://library.dev.local/api/attach/${this.author.id}/${this.selectedBook.id}`;
                     this.axios.post(uri).then(response => {
@@ -307,6 +305,7 @@
                 this.creatingBook = !this.creatingBook;
             },
             bookInputChange(){
+                // this.$v.selectedBook.$touch();
                 let inputValue = this.selectedBook.name.toLowerCase();
                 this.selectedBook.preselected = '';
 

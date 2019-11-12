@@ -1855,9 +1855,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
@@ -2156,8 +2153,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -2270,7 +2265,7 @@ __webpack_require__.r(__webpack_exports__);
     updateAuthor: function updateAuthor() {
       var _this2 = this;
 
-      this.$v.$touch();
+      this.$v.author.$touch();
 
       if (!this.$v.author.$invalid) {
         var uri = "http://library.dev.local/api/author/update/".concat(this.$route.params.id);
@@ -2294,7 +2289,7 @@ __webpack_require__.r(__webpack_exports__);
     createAttachBook: function createAttachBook() {
       var _this4 = this;
 
-      this.$v.$touch();
+      this.$v.selectedBook.$touch();
 
       if (!this.$v.$invalid) {
         var uri = 'http://library.dev.local/api/book/create/attach';
@@ -2310,7 +2305,7 @@ __webpack_require__.r(__webpack_exports__);
     attachBook: function attachBook() {
       var _this5 = this;
 
-      this.$v.$touch();
+      this.$v.selectedBook.$touch();
 
       if (!this.$v.selectedBook.$invalid) {
         var uri = "http://library.dev.local/api/attach/".concat(this.author.id, "/").concat(this.selectedBook.id);
@@ -2339,6 +2334,7 @@ __webpack_require__.r(__webpack_exports__);
       this.creatingBook = !this.creatingBook;
     },
     bookInputChange: function bookInputChange() {
+      // this.$v.selectedBook.$touch();
       var inputValue = this.selectedBook.name.toLowerCase();
       this.selectedBook.preselected = '';
 
@@ -38583,19 +38579,6 @@ var render = function() {
               [
                 _c(
                   "router-link",
-                  { staticClass: "nav-link", attrs: { to: "/" } },
-                  [_vm._v("Home")]
-                )
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c(
-              "li",
-              { staticClass: "nav-item" },
-              [
-                _c(
-                  "router-link",
                   { staticClass: "nav-link", attrs: { to: "/authors" } },
                   [_vm._v("Authors")]
                 )
@@ -38976,7 +38959,7 @@ var render = function() {
                   domProps: { value: _vm.author.firstname },
                   on: {
                     change: function($event) {
-                      return _vm.$v.$touch()
+                      return _vm.$v.author.$touch()
                     },
                     input: function($event) {
                       if ($event.target.composing) {
@@ -38987,7 +38970,7 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _vm.$v.$dirty && _vm.$v.author.firstname.$invalid
+                _vm.$v.author.$dirty && _vm.$v.author.firstname.$invalid
                   ? _c("span", { staticClass: "error-message" }, [
                       _vm._v(_vm._s(_vm.firstnameErrorMessage))
                     ])
@@ -39020,7 +39003,7 @@ var render = function() {
                   domProps: { value: _vm.author.lastname },
                   on: {
                     change: function($event) {
-                      return _vm.$v.$touch()
+                      return _vm.$v.author.$touch()
                     },
                     input: function($event) {
                       if ($event.target.composing) {
@@ -39031,7 +39014,7 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _vm.$v.$dirty && _vm.$v.author.lastname.$invalid
+                _vm.$v.author.$dirty && _vm.$v.author.lastname.$invalid
                   ? _c("span", { staticClass: "error-message" }, [
                       _vm._v(_vm._s(_vm.lastnameErrorMessage))
                     ])
@@ -39066,7 +39049,7 @@ var render = function() {
                   domProps: { value: _vm.author.age },
                   on: {
                     change: function($event) {
-                      return _vm.$v.$touch()
+                      return _vm.$v.author.$touch()
                     },
                     input: function($event) {
                       if ($event.target.composing) {
@@ -39077,7 +39060,7 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _vm.$v.$dirty && _vm.$v.author.age.$invalid
+                _vm.$v.author.$dirty && _vm.$v.author.age.$invalid
                   ? _c("span", { staticClass: "error-message" }, [
                       _vm._v(_vm._s(_vm.ageErrorMessage))
                     ])
@@ -39110,7 +39093,7 @@ var render = function() {
                   domProps: { value: _vm.author.address },
                   on: {
                     change: function($event) {
-                      return _vm.$v.$touch()
+                      return _vm.$v.author.$touch()
                     },
                     input: function($event) {
                       if ($event.target.composing) {
@@ -39121,7 +39104,7 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _vm.$v.$dirty && _vm.$v.author.address.$invalid
+                _vm.$v.author.$dirty && _vm.$v.author.address.$invalid
                   ? _c("span", { staticClass: "error-message" }, [
                       _vm._v(_vm._s(_vm.addressErrorMessage))
                     ])
@@ -39155,202 +39138,190 @@ var render = function() {
               )
         ]),
         _vm._v(" "),
-        _c(
-          "form",
-          {
-            on: {
-              submit: function($event) {
-                $event.preventDefault()
-                return _vm.createAttachBook($event)
-              }
-            }
-          },
-          [
-            _vm.creatingBook
-              ? _c("div", [
-                  _c("div", { staticClass: "row" }, [
-                    _c("div", { staticClass: "col-md-12" }, [
-                      _c(
-                        "div",
-                        {
-                          staticClass: "form-group",
-                          class: {
-                            "form-group--error": _vm.$v.selectedBook.name.$error
+        _vm.creatingBook
+          ? _c("div", [
+              _c("div", { staticClass: "row" }, [
+                _c("div", { staticClass: "col-md-12" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "form-group",
+                      class: {
+                        "form-group--error": _vm.$v.selectedBook.name.$error
+                      }
+                    },
+                    [
+                      _c("label", [_vm._v("Book Name")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.selectedBook.name,
+                            expression: "selectedBook.name"
                           }
-                        },
-                        [
-                          _c("label", [_vm._v("Book Name")]),
-                          _vm._v(" "),
-                          _c("input", {
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "text" },
+                        domProps: { value: _vm.selectedBook.name },
+                        on: {
+                          keyup: _vm.bookInputChange,
+                          focusin: _vm.focusIn,
+                          focusout: _vm.focusOut,
+                          change: function($event) {
+                            return _vm.$v.selectedBook.$touch()
+                          },
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.selectedBook,
+                              "name",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _vm.$v.selectedBook.$dirty &&
+                      _vm.$v.selectedBook.name.$invalid
+                        ? _c("span", { staticClass: "error-message" }, [
+                            _vm._v(_vm._s(_vm.booknameErrorMessage))
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c("div", [
+                        _c(
+                          "ul",
+                          {
                             directives: [
                               {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.selectedBook.name,
-                                expression: "selectedBook.name"
+                                name: "show",
+                                rawName: "v-show",
+                                value: _vm.suggestionsOpen,
+                                expression: "suggestionsOpen"
                               }
                             ],
-                            staticClass: "form-control",
-                            attrs: { type: "text" },
-                            domProps: { value: _vm.selectedBook.name },
-                            on: {
-                              keyup: _vm.bookInputChange,
-                              focusin: _vm.focusIn,
-                              focusout: _vm.focusOut,
-                              change: function($event) {
-                                return _vm.$v.$touch()
-                              },
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.selectedBook,
-                                  "name",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          }),
-                          _vm._v(" "),
-                          _vm.$v.$dirty && _vm.$v.selectedBook.name.$invalid
-                            ? _c("span", { staticClass: "error-message" }, [
-                                _vm._v(_vm._s(_vm.booknameErrorMessage))
-                              ])
-                            : _vm._e(),
-                          _vm._v(" "),
-                          _c("div", [
-                            _c(
-                              "ul",
+                            staticStyle: { width: "100%" }
+                          },
+                          _vm._l(_vm.books, function(suggestion, index) {
+                            return _c(
+                              "li",
                               {
                                 directives: [
                                   {
                                     name: "show",
                                     rawName: "v-show",
-                                    value: _vm.suggestionsOpen,
-                                    expression: "suggestionsOpen"
+                                    value: suggestion.show,
+                                    expression: "suggestion.show"
                                   }
                                 ],
-                                staticStyle: { width: "100%" }
-                              },
-                              _vm._l(_vm.books, function(suggestion, index) {
-                                return _c(
-                                  "li",
-                                  {
-                                    directives: [
-                                      {
-                                        name: "show",
-                                        rawName: "v-show",
-                                        value: suggestion.show,
-                                        expression: "suggestion.show"
-                                      }
-                                    ],
-                                    key: suggestion.id,
-                                    on: {
-                                      click: function($event) {
-                                        return _vm.suggestionClick(index)
-                                      }
-                                    }
-                                  },
-                                  [
-                                    _vm._v(
-                                      "\n                                    " +
-                                        _vm._s(suggestion.name) +
-                                        "\n                                "
-                                    )
-                                  ]
-                                )
-                              }),
-                              0
-                            )
-                          ])
-                        ]
-                      )
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "row" }, [
-                    _c("div", { staticClass: "col-md-12" }, [
-                      _c(
-                        "div",
-                        {
-                          staticClass: "form-group",
-                          class: {
-                            "form-group--error":
-                              _vm.$v.selectedBook.release_date.$error
-                          }
-                        },
-                        [
-                          _c("label", [_vm._v("Release Date")]),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.selectedBook.release_date,
-                                expression: "selectedBook.release_date"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: { type: "date" },
-                            domProps: { value: _vm.selectedBook.release_date },
-                            on: {
-                              keyup: _vm.bookInputChange,
-                              change: function($event) {
-                                return _vm.$v.$touch()
-                              },
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
+                                key: suggestion.id,
+                                on: {
+                                  click: function($event) {
+                                    return _vm.suggestionClick(index)
+                                  }
                                 }
-                                _vm.$set(
-                                  _vm.selectedBook,
-                                  "release_date",
-                                  $event.target.value
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                    " +
+                                    _vm._s(suggestion.name) +
+                                    "\n                                "
                                 )
-                              }
-                            }
+                              ]
+                            )
                           }),
-                          _vm._v(" "),
-                          _vm.$v.$dirty &&
-                          _vm.$v.selectedBook.release_date.$invalid
-                            ? _c("span", { staticClass: "error-message" }, [
-                                _vm._v(_vm._s(_vm.bookdateErrorMessage))
-                              ])
-                            : _vm._e()
-                        ]
-                      )
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group text-center" }, [
-                    _vm.selectedBook.preselected !== ""
-                      ? _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-outline-success",
-                            on: { click: _vm.attachBook }
-                          },
-                          [_vm._v("Attach Selected Book")]
+                          0
                         )
-                      : _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-success",
-                            on: { click: _vm.createAttachBook }
-                          },
-                          [_vm._v("Create And Attach Book")]
-                        )
-                  ]),
-                  _vm._v(" "),
-                  _c("br")
+                      ])
+                    ]
+                  )
                 ])
-              : _vm._e()
-          ]
-        ),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "row" }, [
+                _c("div", { staticClass: "col-md-12" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "form-group",
+                      class: {
+                        "form-group--error":
+                          _vm.$v.selectedBook.release_date.$error
+                      }
+                    },
+                    [
+                      _c("label", [_vm._v("Release Date")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.selectedBook.release_date,
+                            expression: "selectedBook.release_date"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "date" },
+                        domProps: { value: _vm.selectedBook.release_date },
+                        on: {
+                          keyup: _vm.bookInputChange,
+                          change: function($event) {
+                            return _vm.$v.selectedBook.$touch()
+                          },
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.selectedBook,
+                              "release_date",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _vm.$v.selectedBook.$dirty &&
+                      _vm.$v.selectedBook.release_date.$invalid
+                        ? _c("span", { staticClass: "error-message" }, [
+                            _vm._v(_vm._s(_vm.bookdateErrorMessage))
+                          ])
+                        : _vm._e()
+                    ]
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("br"),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group text-center" }, [
+                _vm.selectedBook.preselected !== ""
+                  ? _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-outline-success",
+                        on: { click: _vm.attachBook }
+                      },
+                      [_vm._v("Attach Selected Book")]
+                    )
+                  : _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-success",
+                        on: { click: _vm.createAttachBook }
+                      },
+                      [_vm._v("Create And Attach Book")]
+                    )
+              ]),
+              _vm._v(" "),
+              _c("br")
+            ])
+          : _vm._e(),
         _vm._v(" "),
         _c("table", { staticClass: "table table-hover" }, [
           _vm._m(0),
