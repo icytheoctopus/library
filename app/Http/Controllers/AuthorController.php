@@ -6,7 +6,6 @@ use App\Author;
 use App\Book;
 use App\Http\Resources\AuthorResource;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class AuthorController extends Controller
@@ -53,10 +52,11 @@ class AuthorController extends Controller
         if ($validator->fails()){
             return response()->json([
                 'success' => false,
-                'errors' => $validator->errors()
+                'errors' => $validator->errors(),
+                'messages' => $validator->messages(),
             ],422);
-
-        }else{
+        }
+        else{
             $author = new Author([
                 'firstname' => $request->get('firstname'),
                 'lastname' => $request->get('lastname'),
@@ -108,7 +108,7 @@ class AuthorController extends Controller
     public function update($id, Request $request)
     {
         $rules = [
-            'firstname' => 'required|min:3|max:50',
+            'firstname' => 'required|min:3|max:50|ends_with:foo',
             'lastname' => 'required|min:3|max:50',
             'age' => 'required|numeric|between:15,100',
             'address' => 'max:200',
@@ -123,19 +123,20 @@ class AuthorController extends Controller
 
         $validator = Validator::make($request->all(), $rules, $messages);
         if ($validator->fails()){
-            Log::debug('PROPAOOOOO');
             return response()->json([
                 'success' => false,
-                'errors' => $validator->errors()
+                'errors' => $validator->errors(),
+                'messages' => $validator->messages(),
             ],422);
-        }else{
-            $author = Author::find($id);
-            $author->update($request->all());
-
-            return response()->json([
-                'success' => true,
-            ]);
         }
+
+        $author = Author::find($id);
+        $author->update($request->all());
+
+        return response()->json([
+            'success' => true,
+            'messages' => 'Successfully updated author',
+        ]);
     }
 
     /**

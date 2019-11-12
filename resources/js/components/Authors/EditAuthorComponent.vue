@@ -4,54 +4,65 @@
         <h3>Personal data</h3>
         <div class="row">
             <div class="col-md-6">
-                <div class="form-group" :class="{'form-group--error' : $v.author.firstname.$error}">
+                <div class="form-group" :class="{'form-group--error' : $v.author.firstname.$error || this.laravelValidationErrors.firstname }">
                     <label>Firstname</label>
                     <input type="text"
                            class="form-control"
                            v-model="author.firstname"
                            @change="$v.author.$touch()"
                     >
-                    <span v-if="$v.author.$dirty && $v.author.firstname.$invalid" class="error-message">{{ firstnameErrorMessage }}</span>
+                    <span class="error-message"
+                          v-if="($v.author.$dirty && $v.author.firstname.$invalid) || this.laravelValidationErrors.firstname"
+                          v-html="firstnameErrorMessage"
+                    ></span>
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="form-group" :class="{'form-group--error' : $v.author.lastname.$error}">
+                <div class="form-group" :class="{'form-group--error' : $v.author.lastname.$error || this.laravelValidationErrors.lastname }">
                     <label>Lastname</label>
                     <input type="text"
                            class="form-control"
                            v-model="author.lastname"
                            @change="$v.author.$touch()"
                     >
-                    <span v-if="$v.author.$dirty && $v.author.lastname.$invalid" class="error-message">{{ lastnameErrorMessage }}</span>
+                    <span class="error-message"
+                          v-if="($v.author.$dirty && $v.author.lastname.$invalid) || this.laravelValidationErrors.lastname"
+                          v-html="lastnameErrorMessage"
+                    ></span>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-md-6">
-                <div class="form-group" :class="{'form-group--error' : $v.author.age.$error}">
+                <div class="form-group" :class="{'form-group--error' : $v.author.age.$error || this.laravelValidationErrors.age }">
                     <label>Age</label>
                     <input type="number"
                            class="form-control"
                            v-model="author.age"
                            @change="$v.author.$touch()"
                     >
-                    <span v-if="$v.author.$dirty && $v.author.age.$invalid" class="error-message">{{ ageErrorMessage }}</span>
+                    <span class="error-message"
+                          v-if="($v.author.$dirty && $v.author.age.$invalid) || this.laravelValidationErrors.age"
+                          v-html="ageErrorMessage"
+                    ></span>
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="form-group" :class="{'form-group--error' : $v.author.address.$error}">
+                <div class="form-group" :class="{'form-group--error' : $v.author.address.$error || this.laravelValidationErrors.address }">
                     <label>Address</label>
                     <input type="text"
                            class="form-control"
                            v-model="author.address"
                            @change="$v.author.$touch()"
                     >
-                    <span v-if="$v.author.$dirty && $v.author.address.$invalid" class="error-message">{{ addressErrorMessage }}</span>
+                    <span class="error-message"
+                          v-if="($v.author.$dirty && $v.author.address.$invalid) || this.laravelValidationErrors.address"
+                          v-html="addressErrorMessage"
+                    ></span>
                 </div>
             </div>
         </div>
         <br>
-
 
         <!-- Attach book -->
         <h3>Author's books</h3>
@@ -154,7 +165,10 @@
                     release_date: '',
                     preselected: ''
                 },
-                validationErrors: {}
+                laravelValidationErrors: {
+                    author:{},
+                    book:{},
+                }
             }
         },
         created() {
@@ -197,7 +211,10 @@
         },
         computed: {
             firstnameErrorMessage () {
-                if (!this.$v.author.firstname.required) {
+                if (this.laravelValidationErrors.author.firstname){
+                    return this.laravelValidationErrors.author.firstname.join("<br>");
+                }
+                else if (!this.$v.author.firstname.required) {
                     return 'Firstname is required';
                 }
                 else if (!this.$v.author.firstname.minLength) {
@@ -208,7 +225,10 @@
                 }
             },
             lastnameErrorMessage () {
-                if (!this.$v.author.lastname.required) {
+                if (this.laravelValidationErrors.author.lastname){
+                    return this.laravelValidationErrors.author.lastname.join("<br>");
+                }
+                else if (!this.$v.author.lastname.required) {
                     return 'Lastname is required';
                 }
                 else if (!this.$v.author.lastname.minLength) {
@@ -219,7 +239,10 @@
                 }
             },
             ageErrorMessage () {
-                if (!this.$v.author.age.required) {
+                if (this.laravelValidationErrors.author.age){
+                    return this.laravelValidationErrors.author.age.join("<br>");
+                }
+                else if (!this.$v.author.age.required) {
                     return 'Age is required';
                 }
                 else if (!this.$v.author.age.between) {
@@ -227,7 +250,10 @@
                 }
             },
             addressErrorMessage () {
-                if (!this.$v.author.address.required) {
+                if (this.laravelValidationErrors.author.address){
+                    return this.laravelValidationErrors.author.address.join("<br>");
+                }
+                else if (!this.$v.author.address.required) {
                     return 'Address is required';
                 }
                 else if (!this.$v.author.address.maxLength) {
@@ -236,7 +262,10 @@
             },
             //Book validation
             booknameErrorMessage () {
-                if (!this.$v.selectedBook.name.required) {
+                if (this.laravelValidationErrors.book.name){
+                    return this.laravelValidationErrors.book.name.join("<br>");
+                }
+                else if (!this.$v.selectedBook.name.required) {
                     return 'Book name is required';
                 }
                 else if (!this.$v.selectedBook.name.minLength) {
@@ -247,12 +276,16 @@
                 }
             },
             bookdateErrorMessage () {
-                if (!this.$v.selectedBook.release_date.required) {
+                if (this.laravelValidationErrors.book.release_date){
+                    return this.laravelValidationErrors.book.release_date.join("<br>");
+                }
+                else if (!this.$v.selectedBook.release_date.required) {
                     return 'Book release date is required';
                 }
             },
         },
         methods: {
+            //CRUD and relationships
             updateAuthor() {
                 this.$v.author.$touch();
                 if(!this.$v.author.$invalid){
@@ -260,7 +293,7 @@
                     this.axios.post(uri, this.author).then(response => {
                         this.$router.push({name: 'authors'});
                     }).catch(error => {
-                        this.validationErrors = error.response.data.errors;
+                        this.laravelValidationErrors.author = error.response.data.errors;
                     });
                 }
             },
@@ -269,7 +302,7 @@
                 this.axios.delete(uri).then(response => {
                     this.$router.push({ name: 'authors' });
                 }).catch(error => {
-                    this.validationErrors = error.response.data.errors;
+                    this.laravelValidationErrors.author = error.response.data.errors;
                 });
             },
             createAttachBook() {
@@ -283,7 +316,7 @@
                     this.axios.post(uri, data).then(response => {
                         this.$router.go();
                     }).catch(error => {
-                        this.validationErrors = error.response.data.errors;
+                        this.laravelValidationErrors.book = error.response.data.errors;
                     });
                 }
             },
@@ -294,7 +327,7 @@
                     this.axios.post(uri).then(response => {
                         this.$router.go();
                     }).catch(error => {
-                        this.validationErrors = error.response.data.errors;
+                        this.laravelValidationErrors.book = error.response.data.errors;
                     });
                 }
             },
@@ -303,7 +336,7 @@
                 this.axios.post(uri).then(response => {
                     this.authorBooks.splice(index, 1);
                 }).catch(error => {
-                    this.validationErrors = error.response.data.errors;
+                    this.laravelValidationErrors.book = error.response.data.errors;
                 });
             },
             deleteBook(id, index) {
@@ -311,14 +344,14 @@
                 this.axios.delete(uri).then(response => {
                     this.authorBooks.splice(index, 1);
                 }).catch(error => {
-                    this.validationErrors = error.response.data.errors;
+                    this.laravelValidationErrors.author = error.response.data.errors;
                 });
             },
+            //UI and autosuggestion
             toogleBookForm(){
                 this.creatingBook = !this.creatingBook;
             },
             bookInputChange(){
-                // this.$v.selectedBook.$touch();
                 let inputValue = this.selectedBook.name.toLowerCase();
                 this.selectedBook.preselected = '';
 
@@ -326,7 +359,8 @@
                     if (inputValue.length === 0){
                         //if inputValue empty show all
                         this.books[i].show = true;
-                    } else{
+                    }
+                    else{
                         this.books[i].show = this.books[i].name.toLowerCase().indexOf(inputValue) !== -1;
                     }
                 }

@@ -2153,6 +2153,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -2168,7 +2179,10 @@ __webpack_require__.r(__webpack_exports__);
         release_date: '',
         preselected: ''
       },
-      validationErrors: {}
+      laravelValidationErrors: {
+        author: {},
+        book: {}
+      }
     };
   },
   created: function created() {
@@ -2215,7 +2229,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     firstnameErrorMessage: function firstnameErrorMessage() {
-      if (!this.$v.author.firstname.required) {
+      if (this.laravelValidationErrors.author.firstname) {
+        return this.laravelValidationErrors.author.firstname.join("<br>");
+      } else if (!this.$v.author.firstname.required) {
         return 'Firstname is required';
       } else if (!this.$v.author.firstname.minLength) {
         return 'Firstname should be at least 3 characters long';
@@ -2224,7 +2240,9 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     lastnameErrorMessage: function lastnameErrorMessage() {
-      if (!this.$v.author.lastname.required) {
+      if (this.laravelValidationErrors.author.lastname) {
+        return this.laravelValidationErrors.author.lastname.join("<br>");
+      } else if (!this.$v.author.lastname.required) {
         return 'Lastname is required';
       } else if (!this.$v.author.lastname.minLength) {
         return 'Lastname should be at least 3 characters long';
@@ -2233,14 +2251,18 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     ageErrorMessage: function ageErrorMessage() {
-      if (!this.$v.author.age.required) {
+      if (this.laravelValidationErrors.author.age) {
+        return this.laravelValidationErrors.author.age.join("<br>");
+      } else if (!this.$v.author.age.required) {
         return 'Age is required';
       } else if (!this.$v.author.age.between) {
         return 'Age range is 15-95';
       }
     },
     addressErrorMessage: function addressErrorMessage() {
-      if (!this.$v.author.address.required) {
+      if (this.laravelValidationErrors.author.address) {
+        return this.laravelValidationErrors.author.address.join("<br>");
+      } else if (!this.$v.author.address.required) {
         return 'Address is required';
       } else if (!this.$v.author.address.maxLength) {
         return 'Address should not be longer then 200 characters';
@@ -2248,7 +2270,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     //Book validation
     booknameErrorMessage: function booknameErrorMessage() {
-      if (!this.$v.selectedBook.name.required) {
+      if (this.laravelValidationErrors.book.name) {
+        return this.laravelValidationErrors.book.name.join("<br>");
+      } else if (!this.$v.selectedBook.name.required) {
         return 'Book name is required';
       } else if (!this.$v.selectedBook.name.minLength) {
         return 'Book name should be at least 3 characters long';
@@ -2257,12 +2281,15 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     bookdateErrorMessage: function bookdateErrorMessage() {
-      if (!this.$v.selectedBook.release_date.required) {
+      if (this.laravelValidationErrors.book.release_date) {
+        return this.laravelValidationErrors.book.release_date.join("<br>");
+      } else if (!this.$v.selectedBook.release_date.required) {
         return 'Book release date is required';
       }
     }
   },
   methods: {
+    //CRUD and relationships
     updateAuthor: function updateAuthor() {
       var _this2 = this;
 
@@ -2275,7 +2302,7 @@ __webpack_require__.r(__webpack_exports__);
             name: 'authors'
           });
         })["catch"](function (error) {
-          _this2.validationErrors = error.response.data.errors;
+          _this2.laravelValidationErrors.author = error.response.data.errors;
         });
       }
     },
@@ -2288,7 +2315,7 @@ __webpack_require__.r(__webpack_exports__);
           name: 'authors'
         });
       })["catch"](function (error) {
-        _this3.validationErrors = error.response.data.errors;
+        _this3.laravelValidationErrors.author = error.response.data.errors;
       });
     },
     createAttachBook: function createAttachBook() {
@@ -2305,7 +2332,7 @@ __webpack_require__.r(__webpack_exports__);
         this.axios.post(uri, data).then(function (response) {
           _this4.$router.go();
         })["catch"](function (error) {
-          _this4.validationErrors = error.response.data.errors;
+          _this4.laravelValidationErrors.book = error.response.data.errors;
         });
       }
     },
@@ -2319,7 +2346,7 @@ __webpack_require__.r(__webpack_exports__);
         this.axios.post(uri).then(function (response) {
           _this5.$router.go();
         })["catch"](function (error) {
-          _this5.validationErrors = error.response.data.errors;
+          _this5.laravelValidationErrors.book = error.response.data.errors;
         });
       }
     },
@@ -2330,7 +2357,7 @@ __webpack_require__.r(__webpack_exports__);
       this.axios.post(uri).then(function (response) {
         _this6.authorBooks.splice(index, 1);
       })["catch"](function (error) {
-        _this6.validationErrors = error.response.data.errors;
+        _this6.laravelValidationErrors.book = error.response.data.errors;
       });
     },
     deleteBook: function deleteBook(id, index) {
@@ -2340,14 +2367,14 @@ __webpack_require__.r(__webpack_exports__);
       this.axios["delete"](uri).then(function (response) {
         _this7.authorBooks.splice(index, 1);
       })["catch"](function (error) {
-        _this7.validationErrors = error.response.data.errors;
+        _this7.laravelValidationErrors.author = error.response.data.errors;
       });
     },
+    //UI and autosuggestion
     toogleBookForm: function toogleBookForm() {
       this.creatingBook = !this.creatingBook;
     },
     bookInputChange: function bookInputChange() {
-      // this.$v.selectedBook.$touch();
       var inputValue = this.selectedBook.name.toLowerCase();
       this.selectedBook.preselected = '';
 
@@ -38953,7 +38980,11 @@ var render = function() {
               "div",
               {
                 staticClass: "form-group",
-                class: { "form-group--error": _vm.$v.author.firstname.$error }
+                class: {
+                  "form-group--error":
+                    _vm.$v.author.firstname.$error ||
+                    this.laravelValidationErrors.firstname
+                }
               },
               [
                 _c("label", [_vm._v("Firstname")]),
@@ -38983,10 +39014,12 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _vm.$v.author.$dirty && _vm.$v.author.firstname.$invalid
-                  ? _c("span", { staticClass: "error-message" }, [
-                      _vm._v(_vm._s(_vm.firstnameErrorMessage))
-                    ])
+                (_vm.$v.author.$dirty && _vm.$v.author.firstname.$invalid) ||
+                this.laravelValidationErrors.firstname
+                  ? _c("span", {
+                      staticClass: "error-message",
+                      domProps: { innerHTML: _vm._s(_vm.firstnameErrorMessage) }
+                    })
                   : _vm._e()
               ]
             )
@@ -38997,7 +39030,11 @@ var render = function() {
               "div",
               {
                 staticClass: "form-group",
-                class: { "form-group--error": _vm.$v.author.lastname.$error }
+                class: {
+                  "form-group--error":
+                    _vm.$v.author.lastname.$error ||
+                    this.laravelValidationErrors.lastname
+                }
               },
               [
                 _c("label", [_vm._v("Lastname")]),
@@ -39027,10 +39064,12 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _vm.$v.author.$dirty && _vm.$v.author.lastname.$invalid
-                  ? _c("span", { staticClass: "error-message" }, [
-                      _vm._v(_vm._s(_vm.lastnameErrorMessage))
-                    ])
+                (_vm.$v.author.$dirty && _vm.$v.author.lastname.$invalid) ||
+                this.laravelValidationErrors.lastname
+                  ? _c("span", {
+                      staticClass: "error-message",
+                      domProps: { innerHTML: _vm._s(_vm.lastnameErrorMessage) }
+                    })
                   : _vm._e()
               ]
             )
@@ -39043,7 +39082,10 @@ var render = function() {
               "div",
               {
                 staticClass: "form-group",
-                class: { "form-group--error": _vm.$v.author.age.$error }
+                class: {
+                  "form-group--error":
+                    _vm.$v.author.age.$error || this.laravelValidationErrors.age
+                }
               },
               [
                 _c("label", [_vm._v("Age")]),
@@ -39073,10 +39115,12 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _vm.$v.author.$dirty && _vm.$v.author.age.$invalid
-                  ? _c("span", { staticClass: "error-message" }, [
-                      _vm._v(_vm._s(_vm.ageErrorMessage))
-                    ])
+                (_vm.$v.author.$dirty && _vm.$v.author.age.$invalid) ||
+                this.laravelValidationErrors.age
+                  ? _c("span", {
+                      staticClass: "error-message",
+                      domProps: { innerHTML: _vm._s(_vm.ageErrorMessage) }
+                    })
                   : _vm._e()
               ]
             )
@@ -39087,7 +39131,11 @@ var render = function() {
               "div",
               {
                 staticClass: "form-group",
-                class: { "form-group--error": _vm.$v.author.address.$error }
+                class: {
+                  "form-group--error":
+                    _vm.$v.author.address.$error ||
+                    this.laravelValidationErrors.address
+                }
               },
               [
                 _c("label", [_vm._v("Address")]),
@@ -39117,10 +39165,12 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _vm.$v.author.$dirty && _vm.$v.author.address.$invalid
-                  ? _c("span", { staticClass: "error-message" }, [
-                      _vm._v(_vm._s(_vm.addressErrorMessage))
-                    ])
+                (_vm.$v.author.$dirty && _vm.$v.author.address.$invalid) ||
+                this.laravelValidationErrors.address
+                  ? _c("span", {
+                      staticClass: "error-message",
+                      domProps: { innerHTML: _vm._s(_vm.addressErrorMessage) }
+                    })
                   : _vm._e()
               ]
             )
