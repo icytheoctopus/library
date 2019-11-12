@@ -4,7 +4,7 @@
         <h3>Personal data</h3>
         <div class="row">
             <div class="col-md-6">
-                <div class="form-group" :class="{'form-group--error' : $v.author.firstname.$error || this.laravelValidationErrors.firstname }">
+                <div class="form-group" :class="{'form-group--error' : $v.author.firstname.$error || this.laravelValidationErrors.author.firstname }">
                     <label>Firstname</label>
                     <input type="text"
                            class="form-control"
@@ -12,13 +12,13 @@
                            @change="$v.author.$touch()"
                     >
                     <span class="error-message"
-                          v-if="($v.author.$dirty && $v.author.firstname.$invalid) || this.laravelValidationErrors.firstname"
+                          v-if="($v.author.$dirty && $v.author.firstname.$invalid) || this.laravelValidationErrors.author.firstname"
                           v-html="firstnameErrorMessage"
                     ></span>
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="form-group" :class="{'form-group--error' : $v.author.lastname.$error || this.laravelValidationErrors.lastname }">
+                <div class="form-group" :class="{'form-group--error' : $v.author.lastname.$error || this.laravelValidationErrors.author.lastname }">
                     <label>Lastname</label>
                     <input type="text"
                            class="form-control"
@@ -26,7 +26,7 @@
                            @change="$v.author.$touch()"
                     >
                     <span class="error-message"
-                          v-if="($v.author.$dirty && $v.author.lastname.$invalid) || this.laravelValidationErrors.lastname"
+                          v-if="($v.author.$dirty && $v.author.lastname.$invalid) || this.laravelValidationErrors.author.lastname"
                           v-html="lastnameErrorMessage"
                     ></span>
                 </div>
@@ -34,7 +34,7 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <div class="form-group" :class="{'form-group--error' : $v.author.age.$error || this.laravelValidationErrors.age }">
+                <div class="form-group" :class="{'form-group--error' : $v.author.age.$error || this.laravelValidationErrors.author.age }">
                     <label>Age</label>
                     <input type="number"
                            class="form-control"
@@ -42,13 +42,13 @@
                            @change="$v.author.$touch()"
                     >
                     <span class="error-message"
-                          v-if="($v.author.$dirty && $v.author.age.$invalid) || this.laravelValidationErrors.age"
+                          v-if="($v.author.$dirty && $v.author.age.$invalid) || this.laravelValidationErrors.author.age"
                           v-html="ageErrorMessage"
                     ></span>
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="form-group" :class="{'form-group--error' : $v.author.address.$error || this.laravelValidationErrors.address }">
+                <div class="form-group" :class="{'form-group--error' : $v.author.address.$error || this.laravelValidationErrors.author.address }">
                     <label>Address</label>
                     <input type="text"
                            class="form-control"
@@ -56,7 +56,7 @@
                            @change="$v.author.$touch()"
                     >
                     <span class="error-message"
-                          v-if="($v.author.$dirty && $v.author.address.$invalid) || this.laravelValidationErrors.address"
+                          v-if="($v.author.$dirty && $v.author.address.$invalid) || this.laravelValidationErrors.author.address"
                           v-html="addressErrorMessage"
                     ></span>
                 </div>
@@ -73,7 +73,7 @@
         <div v-if="creatingBook">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="form-group" :class="{'form-group--error' : $v.selectedBook.name.$error}">
+                        <div class="form-group" :class="{'form-group--error' : $v.selectedBook.name.$error || this.laravelValidationErrors.book.name}">
                             <label>Book Name</label>
                             <input type="text"
                                    class="form-control"
@@ -83,7 +83,10 @@
                                    @focusout="focusOut"
                                    @change="$v.selectedBook.$touch()"
                             >
-                            <span v-if="$v.selectedBook.$dirty && $v.selectedBook.name.$invalid" class="error-message">{{ booknameErrorMessage }}</span>
+                            <span class="error-message"
+                                  v-if="($v.selectedBook.$dirty && $v.selectedBook.name.$invalid) || this.laravelValidationErrors.book.name"
+                                  v-html="booknameErrorMessage"
+                            ></span>
                             <div>
                                 <ul class="suggestion" v-show="suggestionsOpen">
                                     <li v-for="(suggestion, index) in books" :key="suggestion.id" @click="suggestionClick(index)" v-show="suggestion.show">
@@ -96,7 +99,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="form-group" :class="{'form-group--error' : $v.selectedBook.release_date.$error}">
+                        <div class="form-group" :class="{'form-group--error' : $v.selectedBook.release_date.$error || this.laravelValidationErrors.book.release_date}">
                             <label>Release Date</label>
                             <input type="date"
                                    class="form-control"
@@ -105,7 +108,10 @@
                                    @keyup="bookInputChange"
                                    @change="$v.selectedBook.$touch()"
                             >
-                            <span v-if="$v.selectedBook.$dirty && $v.selectedBook.release_date.$invalid" class="error-message">{{ bookdateErrorMessage }}</span>
+                            <span class="error-message"
+                                  v-if="($v.selectedBook.$dirty && $v.selectedBook.release_date.$invalid) || this.laravelValidationErrors.book.release_date"
+                                  v-html="bookdateErrorMessage"
+                            ></span>
                         </div>
                     </div>
                 </div>
@@ -294,6 +300,7 @@
                     this.axios.post(uri, this.author).then(response => {
                         this.$router.push({name: 'authors'});
                     }).catch(error => {
+                        console.log(error);
                         this.laravelValidationErrors.author = error.response.data.errors;
                     });
                 }
@@ -389,8 +396,6 @@
         }
     }
 </script>
-
-
 
 <style>
     .error-message{
