@@ -5,8 +5,10 @@ import VueRouter from 'vue-router';
 import VueAxios from 'vue-axios';
 import axios from 'axios';
 import App from './App.vue';
+import Vuelidate from 'vuelidate'
 
 Vue.use(VueRouter);
+Vue.use(Vuelidate)
 Vue.use(VueAxios, axios);
 
 import HomeComponent from './components/HomeComponent';

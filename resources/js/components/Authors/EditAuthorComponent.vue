@@ -4,29 +4,49 @@
         <h3>Personal data</h3>
         <div class="row">
             <div class="col-md-6">
-                <div class="form-group">
+                <div class="form-group" :class="{'form-group--error' : $v.author.firstname.$error}">
                     <label>Firstname</label>
-                    <input type="text" class="form-control" v-model="author.firstname">
+                    <input type="text"
+                           class="form-control"
+                           v-model="author.firstname"
+                           @change="$v.$touch()"
+                    >
+                    <span v-if="$v.$dirty && $v.author.firstname.$invalid" class="error-message">{{ firstnameErrorMessage }}</span>
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="form-group">
+                <div class="form-group" :class="{'form-group--error' : $v.author.lastname.$error}">
                     <label>Lastname</label>
-                    <input type="text" class="form-control" v-model="author.lastname">
+                    <input type="text"
+                           class="form-control"
+                           v-model="author.lastname"
+                           @change="$v.$touch()"
+                    >
+                    <span v-if="$v.$dirty && $v.author.lastname.$invalid" class="error-message">{{ lastnameErrorMessage }}</span>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-md-6">
-                <div class="form-group">
+                <div class="form-group" :class="{'form-group--error' : $v.author.age.$error}">
                     <label>Age</label>
-                    <input type="number" class="form-control" v-model="author.age">
+                    <input type="number"
+                           class="form-control"
+                           v-model="author.age"
+                           @change="$v.$touch()"
+                    >
+                    <span v-if="$v.$dirty && $v.author.age.$invalid" class="error-message">{{ ageErrorMessage }}</span>
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="form-group">
+                <div class="form-group" :class="{'form-group--error' : $v.author.address.$error}">
                     <label>Address</label>
-                    <input type="text" class="form-control" v-model="author.address">
+                    <input type="text"
+                           class="form-control"
+                           v-model="author.address"
+                           @change="$v.$touch()"
+                    >
+                    <span v-if="$v.$dirty && $v.author.address.$invalid" class="error-message">{{ addressErrorMessage }}</span>
                 </div>
             </div>
         </div>
@@ -36,42 +56,56 @@
         <div class="text-right">
             <button class="btn btn-primary" v-if="creatingBook" @click="toogleBookForm">Close</button>
             <button class="btn btn-outline-primary" v-else @click="toogleBookForm">Attach new Book</button>
-            <div class="form-group">
-            </div>
         </div>
 
         <!-- Attach book -->
-        <div v-if="creatingBook">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label>Name</label>
-                        <input type="text" class="form-control" @keyup="bookInputChange" @focusin="focusIn" @focusout="focusOut" v-model="selectedBook.name" >
-                        <div>
-                            <ul style="width:100%" v-show="suggestionsOpen">
-                                <li v-for="(suggestion, index) in books" :key="suggestion.id" @click="suggestionClick(index)" v-show="suggestion.show">
-                                    {{ suggestion.name }}
-                                </li>
-                            </ul>
+        <form @submit.prevent="createAttachBook">
+            <div v-if="creatingBook">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group" :class="{'form-group--error' : $v.selectedBook.name.$error}">
+                            <label>Book Name</label>
+                            <input type="text"
+                                   class="form-control"
+                                   v-model="selectedBook.name"
+                                   @keyup="bookInputChange"
+                                   @focusin="focusIn"
+                                   @focusout="focusOut"
+                                   @change="$v.$touch()"
+                            >
+                            <span v-if="$v.$dirty && $v.selectedBook.name.$invalid" class="error-message">{{ booknameErrorMessage }}</span>
+                            <div>
+                                <ul style="width:100%" v-show="suggestionsOpen">
+                                    <li v-for="(suggestion, index) in books" :key="suggestion.id" @click="suggestionClick(index)" v-show="suggestion.show">
+                                        {{ suggestion.name }}
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label>Release Date</label>
-                        <input type="date" @keyup="bookInputChange" class="form-control" v-model="selectedBook.release_date">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group" :class="{'form-group--error' : $v.selectedBook.release_date.$error}">
+                            <label>Release Date</label>
+                            <input type="date"
+                                   class="form-control"
+                                   v-model="selectedBook.release_date"
+                                   @keyup="bookInputChange"
+                                   @change="$v.$touch()"
+                            >
+                            <span v-if="$v.$dirty && $v.selectedBook.release_date.$invalid" class="error-message">{{ bookdateErrorMessage }}</span>
+                        </div>
                     </div>
                 </div>
+                <br />
+                <div class="form-group text-center">
+                    <button class="btn btn-outline-success" @click="attachBook" v-if="selectedBook.preselected !== ''">Attach Selected Book</button>
+                    <button class="btn btn-success" @click="createAttachBook" v-else>Create And Attach Book</button>
+                </div>
+                <br>
             </div>
-            <br />
-            <div class="form-group text-center">
-                <button class="btn btn-outline-success" @click="attachBook" v-if="selectedBook.preselected !== ''">Attach Selected Book</button>
-                <button class="btn btn-success" @click="createAttachBook" v-else>Create And Attach Book</button>
-            </div>
-            <br>
-        </div>
+        </form>
 
         <table class="table table-hover">
             <thead>
@@ -100,22 +134,13 @@
             <button @click="deleteAuthor" class="btn btn-danger">Delete Author</button>
             <button @click="updateAuthor" class="btn btn-success">Update Author</button>
         </div>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-
     </div>
-    <div v-else >Author not found</div>
+    <div v-else><h2>Author not found</h2></div>
 </template>
 
 <script>
+    import { required, between, minLength, maxLength } from 'vuelidate/lib/validators'
+
     export default {
         data(){
             return {
@@ -141,12 +166,102 @@
                 this.books = response.data.books;
             });
         },
+        validations: {
+            selectedBook: {
+                name: {
+                    required,
+                    minLength: minLength(3),
+                    maxLength: maxLength(100)
+                },
+                release_date: { required },
+            },
+            author:{
+                firstname: {
+                    required,
+                    minLength: minLength(3),
+                    maxLength: maxLength(50)
+                },
+                lastname: {
+                    required,
+                    minLength: minLength(3),
+                    maxLength: maxLength(50)
+                },
+                age: {
+                    required,
+                    between: between(15, 95)
+                },
+                address: {
+                    required,
+                    maxLength: maxLength(200)
+                },
+            },
+        },
+        computed: {
+            firstnameErrorMessage () {
+                if (!this.$v.author.firstname.required) {
+                    return 'Firstname is required';
+                }
+                else if (!this.$v.author.firstname.minLength) {
+                    return 'Firstname should be at least 3 characters long';
+                }
+                else if (!this.$v.author.firstname.maxLength) {
+                    return 'Firstname should not be longer then 50 characters';
+                }
+            },
+            lastnameErrorMessage () {
+                if (!this.$v.author.lastname.required) {
+                    return 'Lastname is required';
+                }
+                else if (!this.$v.author.lastname.minLength) {
+                    return 'Lastname should be at least 3 characters long';
+                }
+                else if (!this.$v.author.lastname.maxLength) {
+                    return 'Lastname should not be longer then 50 characters';
+                }
+            },
+            ageErrorMessage () {
+                if (!this.$v.author.age.required) {
+                    return 'Age is required';
+                }
+                else if (!this.$v.author.age.between) {
+                    return 'Age range is 15-95';
+                }
+            },
+            addressErrorMessage () {
+                if (!this.$v.author.address.required) {
+                    return 'Address is required';
+                }
+                else if (!this.$v.author.address.maxLength) {
+                    return 'Address should not be longer then 200 characters';
+                }
+            },
+            //Book validation
+            booknameErrorMessage () {
+                if (!this.$v.selectedBook.name.required) {
+                    return 'Book name is required';
+                }
+                else if (!this.$v.selectedBook.name.minLength) {
+                    return 'Book name should be at least 3 characters long';
+                }
+                else if (!this.$v.selectedBook.name.maxLength) {
+                    return 'Book name should not be longer then 100 characters';
+                }
+            },
+            bookdateErrorMessage () {
+                if (!this.$v.selectedBook.release_date.required) {
+                    return 'Book release date is required';
+                }
+            },
+        },
         methods: {
             updateAuthor() {
-                let uri = `http://library.dev.local/api/author/update/${this.$route.params.id}`;
-                this.axios.post(uri, this.author).then((response) => {
-                    this.$router.push({name: 'authors'});
-                });
+                this.$v.$touch();
+                if(!this.$v.author.$invalid){
+                    let uri = `http://library.dev.local/api/author/update/${this.$route.params.id}`;
+                    this.axios.post(uri, this.author).then((response) => {
+                        this.$router.push({name: 'authors'});
+                    });
+                }
             },
             deleteAuthor() {
                 let uri = `http://library.dev.local/api/author/delete/${this.author.id}`;
@@ -155,20 +270,26 @@
                 });
             },
             createAttachBook() {
-                let uri = 'http://library.dev.local/api/book/create/attach';
-                let data = {
-                    'author': this.author,
-                    'book': this.selectedBook,
-                };
-                this.axios.post(uri, data).then((response) => {
-                    this.$router.go();
-                });
+                this.$v.$touch();
+                if(!this.$v.$invalid) {
+                    let uri = 'http://library.dev.local/api/book/create/attach';
+                    let data = {
+                        'author': this.author,
+                        'book': this.selectedBook,
+                    };
+                    this.axios.post(uri, data).then((response) => {
+                        this.$router.go();
+                    });
+                }
             },
             attachBook() {
-                let uri = `http://library.dev.local/api/attach/${this.author.id}/${this.selectedBook.id}`;
-                this.axios.post(uri).then(response => {
-                    this.$router.go();
-                });
+                this.$v.$touch();
+                if(!this.$v.selectedBook.$invalid) {
+                    let uri = `http://library.dev.local/api/attach/${this.author.id}/${this.selectedBook.id}`;
+                    this.axios.post(uri).then(response => {
+                        this.$router.go();
+                    });
+                }
             },
             detachBook(book_id, index) {
                 let uri = `http://library.dev.local/api/detach/${this.author.id}/${book_id}`;
@@ -221,3 +342,15 @@
         }
     }
 </script>
+<style>
+    .error-message{
+        color: red;
+        font-size: 12px;
+    }
+    .form-group--error input{
+        border-color: red !important;
+    }
+    .form-group--error label{
+         color: red;
+    }
+</style>
