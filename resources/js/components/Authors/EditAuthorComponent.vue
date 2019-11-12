@@ -199,8 +199,8 @@
             author:{
                 firstname: {
                     required,
-                    // minLength: minLength(3),
-                    // maxLength: maxLength(50)
+                    minLength: minLength(3),
+                    maxLength: maxLength(50)
                 },
                 lastname: {
                     required,

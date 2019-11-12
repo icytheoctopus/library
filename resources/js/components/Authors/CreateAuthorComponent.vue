@@ -85,8 +85,8 @@
             author:{
                 firstname: {
                     required,
-                    // minLength: minLength(3),
-                    // maxLength: maxLength(50)
+                    minLength: minLength(3),
+                    maxLength: maxLength(50)
                 },
                 lastname: {
                     required,
@@ -157,12 +157,14 @@
         },
         methods: {
             addAuthor(){
-                let uri = 'http://library.dev.local/api/author/create';
-                this.axios.post(uri, this.author).then((response) => {
-                    this.$router.push({name: 'authors'});
-                }).catch(error => {
-                    this.laravelValidationErrors.author = error.response.data.errors;
-                });
+                if(!this.$v.$invalid){
+                    let uri = 'http://library.dev.local/api/author/create';
+                    this.axios.post(uri, this.author).then((response) => {
+                        this.$router.push({name: 'authors'});
+                    }).catch(error => {
+                        this.laravelValidationErrors.author = error.response.data.errors;
+                    });
+                }
             }
         }
     }
@@ -178,26 +180,6 @@
     }
     .form-group--error label{
         color: red;
-    }
-    ul.suggestion{
-        background-color: white;
-        border: 1px solid #ced4da;
-        border-radius: 4px;
-        list-style: none;
-
-        padding: 0;
-        width: 100%;
-        max-height: 200px;
-        overflow: auto;
-    }
-    ul.suggestion li{
-        padding: 5px;
-        font-size: 15px;
-        width: 100%;
-    }
-    ul.suggestion li:hover{
-        background-color: #3490dc;
-        color: white;
     }
 </style>
 

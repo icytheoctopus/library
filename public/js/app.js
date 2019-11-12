@@ -2028,9 +2028,9 @@ __webpack_require__.r(__webpack_exports__);
   validations: {
     author: {
       firstname: {
-        required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"] // minLength: minLength(3),
-        // maxLength: maxLength(50)
-
+        required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"],
+        minLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["minLength"])(3),
+        maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["maxLength"])(50)
       },
       lastname: {
         required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"],
@@ -2093,14 +2093,16 @@ __webpack_require__.r(__webpack_exports__);
     addAuthor: function addAuthor() {
       var _this = this;
 
-      var uri = 'http://library.dev.local/api/author/create';
-      this.axios.post(uri, this.author).then(function (response) {
-        _this.$router.push({
-          name: 'authors'
+      if (!this.$v.$invalid) {
+        var uri = 'http://library.dev.local/api/author/create';
+        this.axios.post(uri, this.author).then(function (response) {
+          _this.$router.push({
+            name: 'authors'
+          });
+        })["catch"](function (error) {
+          _this.laravelValidationErrors.author = error.response.data.errors;
         });
-      })["catch"](function (error) {
-        _this.laravelValidationErrors.author = error.response.data.errors;
-      });
+      }
     }
   }
 });
@@ -2319,9 +2321,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     author: {
       firstname: {
-        required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"] // minLength: minLength(3),
-        // maxLength: maxLength(50)
-
+        required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"],
+        minLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["minLength"])(3),
+        maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["maxLength"])(50)
       },
       lastname: {
         required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"],
@@ -2601,6 +2603,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -2629,22 +2633,76 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      book: {}
+      book: {},
+      laravelValidationErrors: {
+        author: {},
+        book: {}
+      }
     };
+  },
+  validations: {
+    book: {
+      name: {
+        required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"],
+        minLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["minLength"])(3),
+        maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["maxLength"])(100)
+      },
+      release_date: {
+        required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"]
+      }
+    }
+  },
+  computed: {
+    booknameErrorMessage: function booknameErrorMessage() {
+      if (this.laravelValidationErrors.book.name) {
+        return this.laravelValidationErrors.book.name.join("<br>");
+      } else if (!this.$v.book.name.required) {
+        return 'Book name is required';
+      } else if (!this.$v.book.name.minLength) {
+        return 'Book name should be at least 3 characters long';
+      } else if (!this.$v.book.name.maxLength) {
+        return 'Book name should not be longer then 100 characters';
+      }
+    },
+    bookdateErrorMessage: function bookdateErrorMessage() {
+      if (this.laravelValidationErrors.book.release_date) {
+        return this.laravelValidationErrors.book.release_date.join("<br>");
+      } else if (!this.$v.book.release_date.required) {
+        return 'Book release date is required';
+      }
+    }
   },
   methods: {
     addBook: function addBook() {
       var _this = this;
 
-      var uri = 'http://library.dev.local/api/book/create';
-      this.axios.post(uri, this.book).then(function (response) {
-        _this.$router.push({
-          name: 'books'
+      if (!this.$v.$invalid) {
+        var uri = 'http://library.dev.local/api/book/create';
+        this.axios.post(uri, this.book).then(function (response) {
+          _this.$router.push({
+            name: 'books'
+          });
+        })["catch"](function (error) {
+          _this.laravelValidationErrors.book = error.response.data.errors;
         });
-      });
+      }
     }
   }
 });
@@ -7205,7 +7263,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.error-message{\n    color: red;\n    font-size: 12px;\n}\n.form-group--error input{\n    border-color: red !important;\n}\n.form-group--error label{\n    color: red;\n}\nul.suggestion{\n    background-color: white;\n    border: 1px solid #ced4da;\n    border-radius: 4px;\n    list-style: none;\n\n    padding: 0;\n    width: 100%;\n    max-height: 200px;\n    overflow: auto;\n}\nul.suggestion li{\n    padding: 5px;\n    font-size: 15px;\n    width: 100%;\n}\nul.suggestion li:hover{\n    background-color: #3490dc;\n    color: white;\n}\n", ""]);
+exports.push([module.i, "\n.error-message{\n    color: red;\n    font-size: 12px;\n}\n.form-group--error input{\n    border-color: red !important;\n}\n.form-group--error label{\n    color: red;\n}\n", ""]);
 
 // exports
 
@@ -39899,96 +39957,122 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("h1", [_vm._v("Create Book")]),
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-md-12" }, [
+        _c(
+          "div",
+          {
+            staticClass: "form-group",
+            class: {
+              "form-group--error":
+                _vm.$v.book.name.$error ||
+                this.laravelValidationErrors.book.name
+            }
+          },
+          [
+            _c("label", [_vm._v("Book Name")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.book.name,
+                  expression: "book.name"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "text" },
+              domProps: { value: _vm.book.name },
+              on: {
+                change: function($event) {
+                  return _vm.$v.book.$touch()
+                },
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.book, "name", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            (_vm.$v.book.$dirty && _vm.$v.book.name.$invalid) ||
+            this.laravelValidationErrors.book.name
+              ? _c("span", {
+                  staticClass: "error-message",
+                  domProps: { innerHTML: _vm._s(_vm.booknameErrorMessage) }
+                })
+              : _vm._e()
+          ]
+        )
+      ])
+    ]),
     _vm._v(" "),
-    _c(
-      "form",
-      {
-        on: {
-          submit: function($event) {
-            $event.preventDefault()
-            return _vm.addBook($event)
-          }
-        }
-      },
-      [
-        _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-md-12" }, [
-            _c("div", { staticClass: "form-group" }, [
-              _c("label", [_vm._v("Name")]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.book.name,
-                    expression: "book.name"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: { type: "text" },
-                domProps: { value: _vm.book.name },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.book, "name", $event.target.value)
-                  }
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-md-12" }, [
+        _c(
+          "div",
+          {
+            staticClass: "form-group",
+            class: {
+              "form-group--error":
+                _vm.$v.book.release_date.$error ||
+                this.laravelValidationErrors.book.release_date
+            }
+          },
+          [
+            _c("label", [_vm._v("Release Date")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.book.release_date,
+                  expression: "book.release_date"
                 }
-              })
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-md-12" }, [
-            _c("div", { staticClass: "form-group" }, [
-              _c("label", [_vm._v("Release Date")]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.book.release_date,
-                    expression: "book.release_date"
+              ],
+              staticClass: "form-control",
+              attrs: { type: "date" },
+              domProps: { value: _vm.book.release_date },
+              on: {
+                change: function($event) {
+                  return _vm.$v.book.$touch()
+                },
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
                   }
-                ],
-                staticClass: "form-control",
-                attrs: { type: "date" },
-                domProps: { value: _vm.book.release_date },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.book, "release_date", $event.target.value)
-                  }
+                  _vm.$set(_vm.book, "release_date", $event.target.value)
                 }
-              })
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("br"),
-        _vm._v(" "),
-        _vm._m(0)
-      ]
-    )
+              }
+            }),
+            _vm._v(" "),
+            (_vm.$v.book.$dirty && _vm.$v.book.release_date.$invalid) ||
+            this.laravelValidationErrors.book.release_date
+              ? _c("span", {
+                  staticClass: "error-message",
+                  domProps: { innerHTML: _vm._s(_vm.bookdateErrorMessage) }
+                })
+              : _vm._e()
+          ]
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c("br"),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group" }, [
+      _c(
+        "button",
+        { staticClass: "btn btn-success", on: { click: _vm.addBook } },
+        [_vm._v("Add Book")]
+      )
+    ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("button", { staticClass: "btn btn-primary" }, [_vm._v("Create Book")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
