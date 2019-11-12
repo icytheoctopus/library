@@ -1,5 +1,6 @@
 <template>
     <div>
+        <h1>Create Book</h1>
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group" :class="{'form-group--error' : $v.book.name.$error || this.laravelValidationErrors.book.name}">
