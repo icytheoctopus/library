@@ -85,7 +85,7 @@
                             >
                             <span v-if="$v.selectedBook.$dirty && $v.selectedBook.name.$invalid" class="error-message">{{ booknameErrorMessage }}</span>
                             <div>
-                                <ul style="width:100%" v-show="suggestionsOpen">
+                                <ul class="suggestion" v-show="suggestionsOpen">
                                     <li v-for="(suggestion, index) in books" :key="suggestion.id" @click="suggestionClick(index)" v-show="suggestion.show">
                                         {{ suggestion.name }}
                                     </li>
@@ -101,6 +101,7 @@
                             <input type="date"
                                    class="form-control"
                                    v-model="selectedBook.release_date"
+                                   :disabled="selectedBook.preselected !==''"
                                    @keyup="bookInputChange"
                                    @change="$v.selectedBook.$touch()"
                             >
@@ -383,11 +384,14 @@
                 this.bookInputChange();
             },
             focusOut(){
-                setTimeout(() => this.closeSuggestions(), 200);
+                // setTimeout(() => this.closeSuggestions(), 200);
             }
         }
     }
 </script>
+
+
+
 <style>
     .error-message{
         color: red;
@@ -397,6 +401,26 @@
         border-color: red !important;
     }
     .form-group--error label{
-         color: red;
+        color: red;
+    }
+    ul.suggestion{
+        background-color: white;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        list-style: none;
+
+        padding: 0;
+        width: 100%;
+        max-height: 200px;
+        overflow: auto;
+    }
+    ul.suggestion li{
+        padding: 5px;
+        font-size: 15px;
+        width: 100%;
+    }
+    ul.suggestion li:hover{
+        background-color: #3490dc;
+        color: white;
     }
 </style>

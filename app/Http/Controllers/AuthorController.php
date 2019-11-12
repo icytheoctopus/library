@@ -6,6 +6,7 @@ use App\Author;
 use App\Book;
 use App\Http\Resources\AuthorResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class AuthorController extends Controller
@@ -92,8 +93,9 @@ class AuthorController extends Controller
     {
         $author = Author::find($id);
         if ($author){
-            $books = Book::all();
+            $books = Book::orderBy('name')->get();
             $authorBooks = $author->books()->get();
+            Log::debug($authorBooks);
 
             return response()->json(['author' => $author, 'authorBooks' => $authorBooks, 'books' => $books]);
         }
