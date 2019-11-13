@@ -76,7 +76,7 @@ class BookController extends Controller
 
         $rules = [
             'name' => 'required|min:3|max:50',
-            'release_date' => 'required|date|before:' . date("Y-m-d")
+            'release_date' => 'required|date|before:' . date("m-d-Y")
         ];
 
         $messages = [
