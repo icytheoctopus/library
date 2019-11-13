@@ -70,6 +70,10 @@ class BookController extends Controller
     }
 
     public function createAttach(Request $request){
+        $authorData = $request->get('author');
+        $author = Author::find($authorData['id']);
+        $bookData = $request->get('book');
+
         $rules = [
             'name' => 'required|min:3|max:50',
             'release_date' => 'required|date'
@@ -82,7 +86,7 @@ class BookController extends Controller
             'date' => 'Please enter valid :attribute',
         ];
 
-        $validator = Validator::make($request->all(), $rules, $messages);
+        $validator = Validator::make($bookData, $rules, $messages);
 
         if ($validator->fails()){
             return response()->json([
@@ -91,10 +95,6 @@ class BookController extends Controller
                 'messages' => $validator->messages(),
             ],422);
         }
-
-        $authorData = $request->get('author');
-        $author = Author::find($authorData['id']);
-        $bookData = $request->get('book');
 
         $book = new Book([
             'name' => $bookData['name'],
