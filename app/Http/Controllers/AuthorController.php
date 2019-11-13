@@ -178,7 +178,7 @@ class AuthorController extends Controller
 
     public function attach($author_id, $book_id){
         $author = Author::find($author_id);
-        $book = Author::find($book_id);
+        $book = Book::find($book_id);
 
         $author->books()->attach($book);
 
