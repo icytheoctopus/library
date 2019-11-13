@@ -254,7 +254,7 @@
                     return 'Age is required';
                 }
                 else if (!this.$v.author.age.between) {
-                    return 'Age range is 15-95';
+                    return 'Age range is 15-100';
                 }
             },
             addressErrorMessage () {

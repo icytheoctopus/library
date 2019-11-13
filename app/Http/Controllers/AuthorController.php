@@ -113,7 +113,7 @@ class AuthorController extends Controller
     public function update($id, Request $request)
     {
         $rules = [
-            'firstname' => 'required|min:3|max:50|ends_with:foo',
+            'firstname' => 'required|min:3|max:50',
             'lastname' => 'required|min:3|max:50',
             'age' => 'required|numeric|between:15,100',
             'address' => 'required|max:200',
