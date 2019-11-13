@@ -19,12 +19,12 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="book in books" :key="book.id">
+            <tr v-for="(book, index) in books" :key="book.id">
                 <td>{{ book.id }}</td>
                 <td>{{ book.name }}</td>
                 <td>{{ book.release_date }}</td>
                 <td><router-link :to="{name: 'edit-book', params: { id: book.id }}" class="btn btn-primary btn-block">Edit</router-link></td>
-                <td><button class="btn btn-danger btn-block" @click.prevent="deleteBook(book.id)">Delete</button></td>
+                <td><button class="btn btn-danger btn-block" @click.prevent="deleteBook(book.id, index)">Delete</button></td>
             </tr>
             </tbody>
         </table>
@@ -45,10 +45,10 @@
             });
         },
         methods: {
-            deleteBook(id) {
+            deleteBook(id, index) {
                 let uri = `http://library.dev.local/api/book/delete/${id}`;
                 this.axios.delete(uri).then(response => {
-                    this.books.splice(this.books.indexOf(id), 1);
+                    this.books.splice(index, 1);
                 });
             }
         }

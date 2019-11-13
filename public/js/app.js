@@ -2583,12 +2583,12 @@ __webpack_require__.r(__webpack_exports__);
     });
   },
   methods: {
-    deleteBook: function deleteBook(id) {
+    deleteBook: function deleteBook(id, index) {
       var _this2 = this;
 
       var uri = "http://library.dev.local/api/book/delete/".concat(id);
       this.axios["delete"](uri).then(function (response) {
-        _this2.books.splice(_this2.books.indexOf(id), 1);
+        _this2.books.splice(index, 1);
       });
     }
   }
@@ -39835,7 +39835,7 @@ var render = function() {
       _vm._v(" "),
       _c(
         "tbody",
-        _vm._l(_vm.books, function(book) {
+        _vm._l(_vm.books, function(book, index) {
           return _c("tr", { key: book.id }, [
             _c("td", [_vm._v(_vm._s(book.id))]),
             _vm._v(" "),
@@ -39868,7 +39868,7 @@ var render = function() {
                   on: {
                     click: function($event) {
                       $event.preventDefault()
-                      return _vm.deleteBook(book.id)
+                      return _vm.deleteBook(book.id, index)
                     }
                   }
                 },
