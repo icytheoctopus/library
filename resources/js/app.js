@@ -11,7 +11,6 @@ Vue.use(VueRouter);
 Vue.use(Vuelidate)
 Vue.use(VueAxios, axios);
 
-import HomeComponent from './components/HomeComponent';
 import AuthorsComponent from "./components/Authors/AuthorsComponent";
 import CreateAuthorComponent from "./components/Authors/CreateAuthorComponent";
 import EditAuthorComponent from "./components/Authors/EditAuthorComponent";
@@ -24,7 +23,7 @@ const routes = [
     {
         name: 'home',
         path: '/',
-        component: HomeComponent
+        component: AuthorsComponent
     },
     {
         name: 'authors',
